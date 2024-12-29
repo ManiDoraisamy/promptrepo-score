@@ -14,42 +14,68 @@ function parseLogprobs(logprobs) {
 }
 
 /**
- * Calculates confidence scores for a JSON output based on a schema and OpenAI logprobs.
- * @param {Object} schema - The JSON schema.
+ * Calculates confidence scores for a JSON output based on OpenAI logprobs.
+ * If a schema is provided, calculates schema-based confidence scores. Otherwise, calculates attribute-level confidence dynamically.
  * @param {Object} jsonOutput - The JSON output to validate.
  * @param {Object} logprobs - Logprobs object from OpenAI API response.
+ * @param {Object} [schema=null] - The JSON schema (optional).
  * @returns {Object} - Validation results and confidence scores.
  */
-function calculateOpenAIConfidenceScores(schema, jsonOutput, logprobs) {
+function calculateOpenAIConfidenceScores(jsonOutput, logprobs, schema = null) {
     const confidenceScores = {};
-    const schemaProperties = schema.properties || {};
     const { tokens, token_probs } = parseLogprobs(logprobs);
 
-    Object.keys(schemaProperties).forEach((key) => {
-        if (jsonOutput[key] !== undefined) {
+    if (schema) {
+        const schemaProperties = schema.properties || {};
+
+        Object.keys(schemaProperties).forEach((key) => {
+            if (jsonOutput[key] !== undefined) {
+                const value = jsonOutput[key];
+                const type = schemaProperties[key].type;
+
+                // Check if value matches the schema type
+                const isValid = validateType(value, type);
+
+                // Calculate confidence based on tokens and their probabilities
+                const relevantTokens = findRelevantTokens(tokens, token_probs, key, value);
+                const confidence = relevantTokens.reduce((acc, prob) => acc * prob, 1);
+
+                confidenceScores[key] = {
+                    value,
+                    isValid,
+                    confidence: Math.min(1, confidence), // Ensure confidence is ≤ 1
+                };
+            } else {
+                confidenceScores[key] = {
+                    value: null,
+                    isValid: !schema.required || !schema.required.includes(key),
+                    confidence: 0, // Missing required fields get 0 confidence
+                };
+            }
+        });
+    } else {
+        // Calculate attribute-level confidence for schema-less outputs
+        Object.keys(jsonOutput).forEach((key) => {
             const value = jsonOutput[key];
-            const type = schemaProperties[key].type;
+            const stringValue = JSON.stringify(value);
 
-            // Check if value matches the schema type
-            const isValid = validateType(value, type);
+            // Find relevant tokens for the key and value
+            const relevantTokens = tokens.map((token, index) => {
+                if (token.includes(key) || token.includes(stringValue)) {
+                    return token_probs[index];
+                }
+                return null;
+            }).filter(Boolean);
 
-            // Calculate confidence based on tokens and their probabilities
-            const relevantTokens = findRelevantTokens(tokens, token_probs, key, value);
+            // Calculate confidence as product of relevant token probabilities
             const confidence = relevantTokens.reduce((acc, prob) => acc * prob, 1);
 
             confidenceScores[key] = {
                 value,
-                isValid,
-                confidence: Math.min(1, confidence), // Ensure confidence is ≤ 1
+                confidence: Math.min(1, confidence),
             };
-        } else {
-            confidenceScores[key] = {
-                value: null,
-                isValid: !schema.required || !schema.required.includes(key),
-                confidence: 0, // Missing required fields get 0 confidence
-            };
-        }
-    });
+        });
+    }
 
     return confidenceScores;
 }
