@@ -14,7 +14,7 @@
 Clone the repository and install dependencies:
 
 ```bash
-$ git clone https://github.com/yourusername/promptrepo-score.git
+$ git clone https://github.com/manidoraisamy/promptrepo-score.git
 $ cd promptrepo-score
 $ npm install
 ```
@@ -132,4 +132,4 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ## Contact
 
-For questions or feedback, please reach out to [your-email@example.com].
+For questions or feedback, please reach out to [support@promptrepo.com].
