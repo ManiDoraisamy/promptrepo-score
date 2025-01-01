@@ -21,14 +21,24 @@ function parseLogprobs(logprobs) {
  * @returns {Object} - Attribute-level confidence scores, including nested structures.
  */
 function calculateNestedConfidence(jsonOutput, tokens, token_probs) {
-    const confidenceScores = {};
+    const confidenceScores = [];
+    const confidenceResults = {};
 
+    // Loop through each key in the JSON output
     Object.keys(jsonOutput).forEach((key) => {
         const value = jsonOutput[key];
 
         if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
             // Recursively handle nested objects
-            confidenceScores[key] = calculateNestedConfidence(value, tokens, token_probs);
+            const nestedConfidence = calculateNestedConfidence(value, tokens, token_probs);
+
+            // Ensure nestedConfidence includes these properties
+            if (nestedConfidence.confidenceScores) {
+                confidenceScores.push(...nestedConfidence.confidenceScores);
+            }
+            if (nestedConfidence.confidenceResults) {
+                confidenceResults[key] = nestedConfidence.confidenceResults;
+            }
         } else {
             const stringValue = JSON.stringify(value);
 
@@ -43,14 +53,24 @@ function calculateNestedConfidence(jsonOutput, tokens, token_probs) {
             // Calculate confidence as product of relevant token probabilities
             const confidence = relevantTokens.reduce((acc, prob) => acc * prob, 1);
 
-            confidenceScores[key] = {
+            confidenceScores.push(confidence);
+            confidenceResults[key] = {
                 value,
                 confidence: Math.min(1, confidence),
             };
         }
     });
 
-    return confidenceScores;
+    // Calculate min and average confidence scores
+    const minConfidence = Math.min(...confidenceScores);
+    const avgConfidence = confidenceScores.reduce((sum, score) => sum + score, 0) / confidenceScores.length;
+
+    return {
+        confidenceResults,
+        confidenceScores,
+        minConfidence,
+        avgConfidence
+    };
 }
 
 /**
@@ -81,7 +101,8 @@ function calculateOpenAIConfidenceScores(jsonOutput, logprobs, schema = null) {
  * @returns {Object} - Schema-based confidence scores.
  */
 function calculateSchemaConfidence(jsonOutput, schemaProperties, tokens, token_probs) {
-    const confidenceScores = {};
+    const confidenceScores = [];
+    const confidenceResults = {};
 
     Object.keys(schemaProperties).forEach((key) => {
         if (jsonOutput[key] !== undefined) {
@@ -95,21 +116,31 @@ function calculateSchemaConfidence(jsonOutput, schemaProperties, tokens, token_p
             const relevantTokens = findRelevantTokens(tokens, token_probs, key, value);
             const confidence = relevantTokens.reduce((acc, prob) => acc * prob, 1);
 
-            confidenceScores[key] = {
+            confidenceScores.push(confidence);
+            confidenceResults[key] = {
                 value,
                 isValid,
                 confidence: Math.min(1, confidence), // Ensure confidence is ≤ 1
             };
         } else {
-            confidenceScores[key] = {
+            confidenceScores.push(0); // Missing required fields get 0 confidence
+            confidenceResults[key] = {
                 value: null,
                 isValid: !schemaProperties.required || !schemaProperties.required.includes(key),
-                confidence: 0, // Missing required fields get 0 confidence
+                confidence: 0,
             };
         }
     });
 
-    return confidenceScores;
+    // Calculate min and average confidence scores
+    const minConfidence = Math.min(...confidenceScores);
+    const avgConfidence = confidenceScores.reduce((sum, score) => sum + score, 0) / confidenceScores.length;
+
+    return {
+        confidenceResults,
+        minConfidence,
+        avgConfidence
+    };
 }
 
 /**
@@ -159,3 +190,4 @@ function findRelevantTokens(tokens, token_probs, key, value) {
 }
 
 module.exports = { calculateOpenAIConfidenceScores };
+
