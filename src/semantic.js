@@ -18,9 +18,9 @@ function cosineSimilarity(vecA, vecB) {
     return dotProduct / (normA * normB);
 }
 
-// Semantic validation using TensorFlow.js and Universal Sentence Encoder
 async function evaluateSemanticSimilarity(extractedFields, responseFields, threshold = 0.6) {
     const matchedPairs = [];
+    const matchedResponseFields = new Set();
 
     // Load the Universal Sentence Encoder model
     const model = await use.load();
@@ -31,17 +31,43 @@ async function evaluateSemanticSimilarity(extractedFields, responseFields, thres
     // Generate embeddings for response fields
     const responseEmbeddings = await model.embed(responseFields);
 
+    // // Log the extracted and response fields along with their embeddings for debugging
+    // console.log("Extracted Fields:", extractedFields);
+    // console.log("Response Fields:", responseFields);
+
+
     // Compute cosine similarity between each pair of embeddings
     for (let i = 0; i < extractedEmbeddings.shape[0]; i++) {
         for (let j = 0; j < responseEmbeddings.shape[0]; j++) {
-            const simScore = cosineSimilarity(extractedEmbeddings.slice([i, 0], [1, -1]), responseEmbeddings.slice([j, 0], [1, -1]));
+            if (matchedResponseFields.has(responseFields[j])) {
+                continue; // Skip already matched response fields
+            }
+            const simScore = cosineSimilarity(
+                extractedEmbeddings.slice([i, 0], [1, -1]),
+                responseEmbeddings.slice([j, 0], [1, -1])
+            );
+
+            // // Log each semantic similarity score for debugging
+            // console.log(`Similarity between extracted field "${extractedFields[i]}" and response field "${responseFields[j]}":`, simScore);
+
             if (simScore >= threshold) {
                 matchedPairs.push([extractedFields[i], responseFields[j], simScore]);
+                matchedResponseFields.add(responseFields[j]); // Mark as matched
+                break; // Move to the next extracted field
             }
         }
     }
 
-    const matchRatio = extractedFields.length ? matchedPairs.length / extractedFields.length : 0;
+    // // Log matched pairs for debugging
+    // console.log("Matched Pairs:", matchedPairs);
+    // console.log("Matched Response Fields:", Array.from(matchedResponseFields)); // Convert Set to array for easier viewing
+
+    // Calculate match ratio using the responseFields count as the denominator
+    const matchRatio = responseFields.length ? matchedPairs.length / responseFields.length : 0;
+    
+    // // Log the final match ratio for debugging
+    // console.log("Match Ratio:", matchRatio);
+
     return matchRatio;
 }
 
@@ -67,3 +93,4 @@ async function evaluate(document, form) {
 }
 
 module.exports = { evaluate };
+
