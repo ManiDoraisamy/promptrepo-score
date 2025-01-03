@@ -55,4 +55,3 @@ async function getValidationResults(jsonOutput, logprobs, document) {
 }
 
 module.exports = { calculateConfidenceScores, calculateSemanticMatchRatio, getValidationResults };
-
