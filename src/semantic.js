@@ -31,11 +31,6 @@ async function evaluateSemanticSimilarity(extractedFields, responseFields, thres
     // Generate embeddings for response fields
     const responseEmbeddings = await model.embed(responseFields);
 
-    // // Log the extracted and response fields along with their embeddings for debugging
-    // console.log("Extracted Fields:", extractedFields);
-    // console.log("Response Fields:", responseFields);
-
-
     // Compute cosine similarity between each pair of embeddings
     for (let i = 0; i < extractedEmbeddings.shape[0]; i++) {
         for (let j = 0; j < responseEmbeddings.shape[0]; j++) {
@@ -47,9 +42,6 @@ async function evaluateSemanticSimilarity(extractedFields, responseFields, thres
                 responseEmbeddings.slice([j, 0], [1, -1])
             );
 
-            // // Log each semantic similarity score for debugging
-            // console.log(`Similarity between extracted field "${extractedFields[i]}" and response field "${responseFields[j]}":`, simScore);
-
             if (simScore >= threshold) {
                 matchedPairs.push([extractedFields[i], responseFields[j], simScore]);
                 matchedResponseFields.add(responseFields[j]); // Mark as matched
@@ -58,17 +50,10 @@ async function evaluateSemanticSimilarity(extractedFields, responseFields, thres
         }
     }
 
-    // // Log matched pairs for debugging
-    // console.log("Matched Pairs:", matchedPairs);
-    // console.log("Matched Response Fields:", Array.from(matchedResponseFields)); // Convert Set to array for easier viewing
-
     // Calculate match ratio using the responseFields count as the denominator
     const matchRatio = responseFields.length ? matchedPairs.length / responseFields.length : 0;
-    
-    // // Log the final match ratio for debugging
-    // console.log("Match Ratio:", matchRatio);
 
-    return matchRatio;
+    return { matchRatio, matchedPairs };
 }
 
 // Evaluate the input and response
@@ -84,13 +69,23 @@ async function evaluate(document, form) {
             }
         }
 
-        const matchRatio = await evaluateSemanticSimilarity(extractedFields, responseFields);
-        return { "Match Ratio (Semantic)": matchRatio };
+        const { matchRatio, matchedPairs } = await evaluateSemanticSimilarity(extractedFields, responseFields);
+
+        return {
+            "Match Ratio (Semantic)": matchRatio,
+            "Matched Pairs": matchedPairs,
+            "Extracted Fields": extractedFields,
+            "Response Fields": responseFields
+        };
     } catch (err) {
         console.error("Error during semantic evaluation:", err);
-        return { "Match Ratio (Semantic)": 0 };
+        return {
+            "Match Ratio (Semantic)": 0,
+            "Matched Pairs": [],
+            "Extracted Fields": [],
+            "Response Fields": []
+        };
     }
 }
 
 module.exports = { evaluate };
-
