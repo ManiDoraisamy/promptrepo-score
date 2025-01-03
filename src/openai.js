@@ -190,4 +190,3 @@ function findRelevantTokens(tokens, token_probs, key, value) {
 }
 
 module.exports = { calculateOpenAIConfidenceScores };
-
