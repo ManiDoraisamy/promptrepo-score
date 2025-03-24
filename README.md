@@ -124,6 +124,16 @@ console.log("Confidence Scores:", JSON.stringify(result, null, 2));
 }
 ```
 
+## Contributing to project
+
+Clone the repository and install dependencies:
+
+```bash
+$ git clone https://github.com/manidoraisamy/promptrepo-score.git
+$ cd promptrepo-score
+$ npm install
+```
+
 ## Project Structure
 
 ```
