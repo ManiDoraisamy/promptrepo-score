@@ -11,12 +11,10 @@
 
 ## Installation
 
-Clone the repository and install dependencies:
+Install dependencies:
 
 ```bash
-$ git clone https://github.com/manidoraisamy/promptrepo-score.git
-$ cd promptrepo-score
-$ npm install
+$ npm i @promptrepo/score
 ```
 
 ## Usage
