@@ -74,22 +74,29 @@ function calculateNestedConfidence(jsonOutput, tokens, token_probs) {
 }
 
 /**
- * Calculates confidence scores for a JSON output based on OpenAI logprobs.
- * If a schema is provided, calculates schema-based confidence scores. Otherwise, calculates attribute-level confidence dynamically.
- * @param {Object} jsonOutput - The JSON output to validate.
- * @param {Object} logprobs - Logprobs object from OpenAI API response.
- * @param {Object} [schema=null] - The JSON schema (optional).
- * @returns {Object} - Validation results and confidence scores.
+ * Calculates confidence scores for OpenAI model outputs
+ * @param {Object} jsonOutput - The JSON output to validate
+ * @param {Object} logprobs - Logprobs object from OpenAI API response
+ * @param {Object} [schema=null] - Optional JSON schema
+ * @returns {Object} - Confidence scores for each field
  */
-function calculateOpenAIConfidenceScores(jsonOutput, logprobs, schema = null) {
-    const { tokens, token_probs } = parseLogprobs(logprobs);
-
-    if (schema) {
-        const schemaProperties = schema.properties || {};
-        return calculateSchemaConfidence(jsonOutput, schemaProperties, tokens, token_probs);
-    } else {
-        return calculateNestedConfidence(jsonOutput, tokens, token_probs);
+export function calculateOpenAIConfidenceScores(jsonOutput, logprobs, schema = null) {
+    const confidenceScores = {};
+    
+    // Calculate confidence scores for each field
+    for (const [key, value] of Object.entries(jsonOutput)) {
+        if (logprobs[key]) {
+            confidenceScores[key] = logprobs[key];
+        } else {
+            // If no logprob available, use a default confidence
+            confidenceScores[key] = 0.5;
+        }
     }
+
+    return {
+        confidenceScores,
+        schema: schema || null
+    };
 }
 
 /**
@@ -188,5 +195,3 @@ function findRelevantTokens(tokens, token_probs, key, value) {
 
     return relevantProbs;
 }
-
-module.exports = { calculateOpenAIConfidenceScores };

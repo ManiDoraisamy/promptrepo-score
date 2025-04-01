@@ -1,5 +1,5 @@
-const { calculateOpenAIConfidenceScores } = require('./openai');
-const { evaluate } = require('./semantic.js');
+import { calculateOpenAIConfidenceScores } from './openai.js';
+import { evaluate } from './semantic.js';
 
 /**
  * Delegates confidence score calculation to OpenAI-specific logic.
@@ -9,7 +9,7 @@ const { evaluate } = require('./semantic.js');
  * @param {Object} [schema=null] - The JSON schema (optional).
  * @returns {Object} - Validation results and confidence scores.
  */
-function calculateConfidenceScores(jsonOutput, logprobs, schema = null) {
+export function calculateConfidenceScores(jsonOutput, logprobs, schema = null) {
     return calculateOpenAIConfidenceScores(jsonOutput, logprobs, schema);
 }
 
@@ -19,7 +19,7 @@ function calculateConfidenceScores(jsonOutput, logprobs, schema = null) {
  * @param {Object} form - The form structure to compare.
  * @returns {Object} - Semantic match ratio.
  */
-async function calculateSemanticMatchRatio(document, form) {
+export async function calculateSemanticMatchRatio(document, form) {
     try {
         const result = await evaluate(document, form);
         return result;  // This will contain the match ratio
@@ -36,22 +36,20 @@ async function calculateSemanticMatchRatio(document, form) {
  * @param {string} document - The document text to validate.
  * @returns {Object} - Combined results (confidence scores and semantic match ratio).
  */
-async function getValidationResults(jsonOutput, logprobs, document) {
+export async function getValidationResults(jsonOutput, logprobs, document) {
     try {
         // Get confidence scores
         const confidenceScores = calculateConfidenceScores(jsonOutput, logprobs);
 
         // Get semantic match ratio
-        const matchRatio = await calculateSemanticMatchRatio(document, jsonOutput);
+        const semanticResult = await calculateSemanticMatchRatio(document, jsonOutput);
 
         return {
             confidenceScores,
-            matchRatio
+            matchRatio: semanticResult.matchRatio  // Extract just the number
         };
     } catch (error) {
         console.error("Error in getValidationResults:", error);
         throw error;
     }
 }
-
-module.exports = { calculateConfidenceScores, calculateSemanticMatchRatio, getValidationResults };

@@ -1,91 +1,69 @@
-const use = require('@tensorflow-models/universal-sentence-encoder');
-const tf = require('@tensorflow/tfjs-node'); // Ensure TensorFlow.js is installed
+import natural from 'natural';
 
-// Extract key fields from markdown
-function extractFieldsFromMarkdown(markdown) {
-    const regex = /([A-Za-z\s]+:|[A-Za-z\s]+|[A-Za-z\s]+\?+|[A-Za-z\s]+\.+|[A-Za-z\s]+_+)/g;
-    const potentialFields = markdown.match(regex);
-    if (!potentialFields) return []; // Handle cases where no matches are found
-    const fieldNames = potentialFields.map(match => match.replace(/[\s_:?\.]+/g, " ").trim());
-    return [...new Set(fieldNames)]; // Remove duplicates
-}
+const tokenizer = new natural.WordTokenizer();
+const TfIdf = natural.TfIdf;
 
-// Compute cosine similarity between two vectors
-function cosineSimilarity(vecA, vecB) {
-    const dotProduct = tf.matMul(vecA, vecB, false, true).dataSync()[0];
-    const normA = tf.norm(vecA).dataSync()[0];
-    const normB = tf.norm(vecB).dataSync()[0];
-    return dotProduct / (normA * normB);
-}
-
-async function evaluateSemanticSimilarity(extractedFields, responseFields, threshold = 0.6) {
-    const matchedPairs = [];
-    const matchedResponseFields = new Set();
-
-    // Load the Universal Sentence Encoder model
-    const model = await use.load();
-
-    // Generate embeddings for extracted fields
-    const extractedEmbeddings = await model.embed(extractedFields);
-
-    // Generate embeddings for response fields
-    const responseEmbeddings = await model.embed(responseFields);
-
-    // Compute cosine similarity between each pair of embeddings
-    for (let i = 0; i < extractedEmbeddings.shape[0]; i++) {
-        for (let j = 0; j < responseEmbeddings.shape[0]; j++) {
-            if (matchedResponseFields.has(responseFields[j])) {
-                continue; // Skip already matched response fields
-            }
-            const simScore = cosineSimilarity(
-                extractedEmbeddings.slice([i, 0], [1, -1]),
-                responseEmbeddings.slice([j, 0], [1, -1])
-            );
-
-            if (simScore >= threshold) {
-                matchedPairs.push([extractedFields[i], responseFields[j], simScore]);
-                matchedResponseFields.add(responseFields[j]); // Mark as matched
-                break; // Move to the next extracted field
-            }
+/**
+ * Evaluates semantic similarity between a document and a form structure
+ * @param {string} document - The document text to validate
+ * @param {Object} form - The form structure to compare
+ * @returns {Object} - Match ratio and details
+ */
+export async function evaluate(document, form) {
+    // Create TF-IDF vectors
+    const tfidf = new TfIdf();
+    
+    // Add document to TF-IDF
+    tfidf.addDocument(document);
+    
+    // Add form values to TF-IDF
+    const formText = Object.values(form)
+        .filter(value => typeof value === 'string' || typeof value === 'number')
+        .map(value => String(value))
+        .join(' ');
+    tfidf.addDocument(formText);
+    
+    // Calculate cosine similarity
+    const vectors = tfidf.listTerms(0).map(item => item.tfidf);
+    const formVectors = tfidf.listTerms(1).map(item => item.tfidf);
+    
+    // Calculate match ratio (cosine similarity)
+    const matchRatio = cosineSimilarity(vectors, formVectors);
+    
+    return {
+        matchRatio: matchRatio,  // Return as a number, not an object
+        details: {
+            documentLength: document.length,
+            formLength: formText.length,
+            vectorLength: vectors.length
         }
-    }
-
-    // Calculate match ratio using the responseFields count as the denominator
-    const matchRatio = responseFields.length ? matchedPairs.length / responseFields.length : 0;
-
-    return { matchRatio, matchedPairs };
+    };
 }
 
-// Evaluate the input and response
-async function evaluate(document, form) {
-    try {
-        const extractedFields = extractFieldsFromMarkdown(document);
-        let responseFields = [];
-        
-        for (let formName in form.Form) {
-            const formContent = form.Form[formName];
-            if (formContent.fields) {
-                responseFields = responseFields.concat(Object.keys(formContent.fields));
-            }
-        }
-
-        const { matchRatio, matchedPairs } = await evaluateSemanticSimilarity(extractedFields, responseFields);
-
-        return {
-            "Match Ratio (Semantic)": matchRatio,
-            "Matched Pairs": matchedPairs,
-            "Extracted Fields": extractedFields,
-            "Response Fields": responseFields
-        };
-    } catch (err) {
-        console.error("Error during semantic evaluation:", err);
-        return {
-            "Match Ratio (Semantic)": 0,
-            "Matched Pairs": [],
-            "Extracted Fields": [],
-            "Response Fields": []
-        };
+/**
+ * Calculates cosine similarity between two vectors
+ * @param {number[]} vec1 - First vector
+ * @param {number[]} vec2 - Second vector
+ * @returns {number} - Cosine similarity score
+ */
+function cosineSimilarity(vec1, vec2) {
+    // Pad vectors to same length if necessary
+    const maxLength = Math.max(vec1.length, vec2.length);
+    while (vec1.length < maxLength) vec1.push(0);
+    while (vec2.length < maxLength) vec2.push(0);
+    
+    // Calculate dot product
+    let dotProduct = 0;
+    for (let i = 0; i < maxLength; i++) {
+        dotProduct += vec1[i] * vec2[i];
     }
+    
+    // Calculate magnitudes
+    const magnitude1 = Math.sqrt(vec1.reduce((sum, val) => sum + val * val, 0));
+    const magnitude2 = Math.sqrt(vec2.reduce((sum, val) => sum + val * val, 0));
+    
+    // Avoid division by zero
+    if (magnitude1 === 0 || magnitude2 === 0) return 0;
+    
+    return dotProduct / (magnitude1 * magnitude2);
 }
-
-module.exports = { evaluate };

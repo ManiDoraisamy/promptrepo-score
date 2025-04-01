@@ -1,0 +1,16 @@
+{
+  "name": "@promptrepo/score",
+  "version": "1.0.0",
+  "description": "A package for scoring and validating prompts",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "dependencies": {
+    "natural": "^6.10.4"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+} 
