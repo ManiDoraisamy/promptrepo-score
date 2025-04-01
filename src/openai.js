@@ -18,40 +18,51 @@ function parseLogprobs(logprobs) {
  * @param {Object} jsonOutput - The JSON output to validate.
  * @param {Object} tokens - Tokens from the logprobs object.
  * @param {Array<number>} token_probs - Probabilities of each token.
+ * @param {string} parentKey - The parent key for nested structures.
  * @returns {Object} - Attribute-level confidence scores, including nested structures.
  */
-function calculateNestedConfidence(jsonOutput, tokens, token_probs) {
+function calculateNestedConfidence(jsonOutput, tokens, token_probs, parentKey = '') {
     const confidenceScores = [];
     const confidenceResults = {};
+
+    // Handle empty object case
+    if (Object.keys(jsonOutput).length === 0) {
+        return {
+            confidenceResults: {},
+            confidenceScores: [],
+            minConfidence: 0,
+            avgConfidence: 0
+        };
+    }
 
     // Loop through each key in the JSON output
     Object.keys(jsonOutput).forEach((key) => {
         const value = jsonOutput[key];
+        const fullKey = parentKey ? `${parentKey}.${key}` : key;
 
         if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-            // Recursively handle nested objects
-            const nestedConfidence = calculateNestedConfidence(value, tokens, token_probs);
-
-            // Ensure nestedConfidence includes these properties
+            // Recursively handle nested objects with the full key path
+            const nestedConfidence = calculateNestedConfidence(value, tokens, token_probs, fullKey);
+            
+            // Add nested confidence scores to our collection
             if (nestedConfidence.confidenceScores) {
                 confidenceScores.push(...nestedConfidence.confidenceScores);
             }
-            if (nestedConfidence.confidenceResults) {
-                confidenceResults[key] = nestedConfidence.confidenceResults;
-            }
+            
+            // Store nested results
+            confidenceResults[key] = nestedConfidence.confidenceResults;
         } else {
-            const stringValue = JSON.stringify(value);
+            // Use the full key path for token matching
+            const relevantTokens = findRelevantTokens(tokens, token_probs, fullKey, value);
+            
+            // If no direct match found, try matching with just the key
+            const keyOnlyTokens = relevantTokens.length === 0 
+                ? findRelevantTokens(tokens, token_probs, key, value)
+                : relevantTokens;
 
-            // Find relevant tokens for the key and value
-            const relevantTokens = tokens.map((token, index) => {
-                if (token.includes(key) || token.includes(stringValue)) {
-                    return token_probs[index];
-                }
-                return null;
-            }).filter(Boolean);
-
-            // Calculate confidence as product of relevant token probabilities
-            const confidence = relevantTokens.reduce((acc, prob) => acc * prob, 1);
+            const confidence = keyOnlyTokens.length > 0 
+                ? keyOnlyTokens.reduce((acc, prob) => acc * prob, 1)
+                : 0;
 
             confidenceScores.push(confidence);
             confidenceResults[key] = {
@@ -62,8 +73,10 @@ function calculateNestedConfidence(jsonOutput, tokens, token_probs) {
     });
 
     // Calculate min and average confidence scores
-    const minConfidence = Math.min(...confidenceScores);
-    const avgConfidence = confidenceScores.reduce((sum, score) => sum + score, 0) / confidenceScores.length;
+    const minConfidence = confidenceScores.length > 0 ? Math.min(...confidenceScores) : 0;
+    const avgConfidence = confidenceScores.length > 0 
+        ? confidenceScores.reduce((sum, score) => sum + score, 0) / confidenceScores.length
+        : 0;
 
     return {
         confidenceResults,
@@ -81,22 +94,16 @@ function calculateNestedConfidence(jsonOutput, tokens, token_probs) {
  * @returns {Object} - Confidence scores for each field
  */
 export function calculateOpenAIConfidenceScores(jsonOutput, logprobs, schema = null) {
-    const confidenceScores = {};
     const { tokens, token_logprobs } = logprobs;
-    
-    // Process tokens and their probabilities
-    for (let i = 0; i < tokens.length; i++) {
-        const token = tokens[i];
-        const prob = Math.exp(token_logprobs[i]); // Convert log prob to probability
-        
-        // Extract field name from tokens
-        if (token.startsWith('"') && i + 2 < tokens.length && tokens[i + 1] === ':') {
-            const fieldName = token.replace(/"/g, '');
-            confidenceScores[fieldName] = prob;
-        }
+    const token_probs = token_logprobs.map(logprob => Math.exp(logprob));
+
+    if (schema) {
+        const schemaProperties = schema.properties || {};
+        const requiredFields = schema.required || [];
+        return calculateSchemaConfidence(jsonOutput, schemaProperties, tokens, token_probs, requiredFields);
+    } else {
+        return calculateNestedConfidence(jsonOutput, tokens, token_probs);
     }
-    
-    return confidenceScores;
 }
 
 /**
@@ -105,43 +112,60 @@ export function calculateOpenAIConfidenceScores(jsonOutput, logprobs, schema = n
  * @param {Object} schemaProperties - Schema properties to validate against.
  * @param {Array<string>} tokens - Tokens from the logprobs.
  * @param {Array<number>} token_probs - Token probabilities.
+ * @param {Array<string>} requiredFields - Required fields from the schema.
  * @returns {Object} - Schema-based confidence scores.
  */
-function calculateSchemaConfidence(jsonOutput, schemaProperties, tokens, token_probs) {
+function calculateSchemaConfidence(jsonOutput, schemaProperties, tokens, token_probs, requiredFields) {
     const confidenceScores = [];
     const confidenceResults = {};
 
-    Object.keys(schemaProperties).forEach((key) => {
-        if (jsonOutput[key] !== undefined) {
-            const value = jsonOutput[key];
-            const type = schemaProperties[key].type;
+    // Handle empty schema case
+    if (Object.keys(schemaProperties).length === 0) {
+        return {
+            confidenceResults: {},
+            minConfidence: 0,
+            avgConfidence: 0
+        };
+    }
 
+    Object.keys(schemaProperties).forEach((key) => {
+        const schemaProperty = schemaProperties[key];
+        const value = jsonOutput[key];
+        const type = schemaProperty.type;
+        const isRequired = requiredFields.includes(key);
+
+        if (value !== undefined) {
             // Check if value matches the schema type
             const isValid = validateType(value, type);
 
             // Calculate confidence based on tokens and their probabilities
             const relevantTokens = findRelevantTokens(tokens, token_probs, key, value);
-            const confidence = relevantTokens.reduce((acc, prob) => acc * prob, 1);
+            const confidence = relevantTokens.length > 0 
+                ? relevantTokens.reduce((acc, prob) => acc * prob, 1)
+                : 0;
 
             confidenceScores.push(confidence);
             confidenceResults[key] = {
                 value,
                 isValid,
-                confidence: Math.min(1, confidence), // Ensure confidence is ≤ 1
+                confidence: Math.min(1, confidence),
             };
         } else {
-            confidenceScores.push(0); // Missing required fields get 0 confidence
+            // Handle missing fields
+            confidenceScores.push(0);
             confidenceResults[key] = {
                 value: null,
-                isValid: !schemaProperties.required || !schemaProperties.required.includes(key),
+                isValid: !isRequired,
                 confidence: 0,
             };
         }
     });
 
     // Calculate min and average confidence scores
-    const minConfidence = Math.min(...confidenceScores);
-    const avgConfidence = confidenceScores.reduce((sum, score) => sum + score, 0) / confidenceScores.length;
+    const minConfidence = confidenceScores.length > 0 ? Math.min(...confidenceScores) : 0;
+    const avgConfidence = confidenceScores.length > 0 
+        ? confidenceScores.reduce((sum, score) => sum + score, 0) / confidenceScores.length
+        : 0;
 
     return {
         confidenceResults,
@@ -185,11 +209,26 @@ function validateType(value, type) {
  */
 function findRelevantTokens(tokens, token_probs, key, value) {
     const relevantProbs = [];
-    const stringValue = JSON.stringify(value); // Convert value to string for matching
+    const stringValue = JSON.stringify(value).replace(/^"|"$/g, ''); // Remove surrounding quotes
+    const searchKey = key.toLowerCase();
+    const searchValue = stringValue.toLowerCase();
 
+    // Combine consecutive tokens for better matching
+    let combinedToken = '';
     tokens.forEach((token, index) => {
-        if (token.includes(key) || token.includes(stringValue)) {
+        const cleanToken = token.replace(/^"|"$/g, '').toLowerCase();
+        
+        // Add current token to combined token
+        combinedToken += cleanToken;
+        
+        // Check for matches in combined token
+        if (combinedToken.includes(searchKey) || combinedToken.includes(searchValue)) {
             relevantProbs.push(token_probs[index]);
+        }
+        
+        // Reset combined token if it ends with a delimiter
+        if (token === ':' || token === ',' || token === '}') {
+            combinedToken = '';
         }
     });
 
