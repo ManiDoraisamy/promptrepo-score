@@ -1,7 +1,7 @@
 {
   "name": "@promptrepo/score",
-  "version": "4.0.1",
-  "description": "A package for scoring and validating prompts",
+  "version": "5.0.1",
+  "description": "Calculate confidence scores for OpenAI JSON outputs",
   "type": "module",
   "main": "src/index.js",
   "files": [
