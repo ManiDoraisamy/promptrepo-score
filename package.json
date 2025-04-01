@@ -1,6 +1,6 @@
 {
   "name": "@promptrepo/score",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "A package for scoring and validating prompts",
   "type": "module",
   "main": "src/index.js",
