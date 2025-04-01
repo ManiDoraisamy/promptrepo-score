@@ -82,21 +82,21 @@ function calculateNestedConfidence(jsonOutput, tokens, token_probs) {
  */
 export function calculateOpenAIConfidenceScores(jsonOutput, logprobs, schema = null) {
     const confidenceScores = {};
+    const { tokens, token_logprobs } = logprobs;
     
-    // Calculate confidence scores for each field
-    for (const [key, value] of Object.entries(jsonOutput)) {
-        if (logprobs[key]) {
-            confidenceScores[key] = logprobs[key];
-        } else {
-            // If no logprob available, use a default confidence
-            confidenceScores[key] = 0.5;
+    // Process tokens and their probabilities
+    for (let i = 0; i < tokens.length; i++) {
+        const token = tokens[i];
+        const prob = Math.exp(token_logprobs[i]); // Convert log prob to probability
+        
+        // Extract field name from tokens
+        if (token.startsWith('"') && i + 2 < tokens.length && tokens[i + 1] === ':') {
+            const fieldName = token.replace(/"/g, '');
+            confidenceScores[fieldName] = prob;
         }
     }
-
-    return {
-        confidenceScores,
-        schema: schema || null
-    };
+    
+    return confidenceScores;
 }
 
 /**

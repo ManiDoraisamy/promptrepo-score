@@ -1,16 +1,33 @@
 {
   "name": "@promptrepo/score",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "description": "A package for scoring and validating prompts",
   "type": "module",
   "main": "src/index.js",
+  "files": [
+    "src/**/*.js",
+    "README.md"
+  ],
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
   },
   "dependencies": {
     "natural": "^6.10.4"
   },
   "devDependencies": {
     "jest": "^29.7.0"
-  }
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "keywords": [
+    "prompt",
+    "scoring",
+    "validation",
+    "openai",
+    "nlp"
+  ],
+  "author": "PromptRepo",
+  "license": "MIT"
 }
