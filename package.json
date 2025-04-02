@@ -13,6 +13,7 @@
     "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
   },
   "dependencies": {
+    "json-schema-generator": "^2.0.6",
     "natural": "^6.10.4"
   },
   "devDependencies": {

@@ -1,109 +1,25 @@
 // openai.js
 
-/**
- * Parses logprobs from OpenAI API responses and prepares token probabilities.
- * @param {Object} logprobs - OpenAI logprobs object.
- * @returns {Object} - Formatted token probabilities.
- */
-function parseLogprobs(logprobs) {
-    const { tokens, token_logprobs } = logprobs;
-    return {
-        tokens,
-        token_probs: token_logprobs.map((logprob) => Math.exp(logprob)), // Convert logprobs to probabilities
-    };
-}
-
-/**
- * Recursively calculates confidence scores for a nested JSON structure.
- * @param {Object} jsonOutput - The JSON output to validate.
- * @param {Object} tokens - Tokens from the logprobs object.
- * @param {Array<number>} token_probs - Probabilities of each token.
- * @param {string} parentKey - The parent key for nested structures.
- * @returns {Object} - Attribute-level confidence scores, including nested structures.
- */
-function calculateNestedConfidence(jsonOutput, tokens, token_probs, parentKey = '') {
-    const confidenceScores = [];
-    const confidenceResults = {};
-
-    // Handle empty object case
-    if (Object.keys(jsonOutput).length === 0) {
-        return {
-            confidenceResults: {},
-            confidenceScores: [],
-            minConfidence: 0,
-            avgConfidence: 0
-        };
-    }
-
-    // Loop through each key in the JSON output
-    Object.keys(jsonOutput).forEach((key) => {
-        const value = jsonOutput[key];
-        const fullKey = parentKey ? `${parentKey}.${key}` : key;
-
-        if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-            // Recursively handle nested objects with the full key path
-            const nestedConfidence = calculateNestedConfidence(value, tokens, token_probs, fullKey);
-            
-            // Add nested confidence scores to our collection
-            if (nestedConfidence.confidenceScores) {
-                confidenceScores.push(...nestedConfidence.confidenceScores);
-            }
-            
-            // Store nested results
-            confidenceResults[key] = nestedConfidence.confidenceResults;
-        } else {
-            // Use the full key path for token matching
-            const relevantTokens = findRelevantTokens(tokens, token_probs, fullKey, value);
-            
-            // If no direct match found, try matching with just the key
-            const keyOnlyTokens = relevantTokens.length === 0 
-                ? findRelevantTokens(tokens, token_probs, key, value)
-                : relevantTokens;
-
-            const confidence = keyOnlyTokens.length > 0 
-                ? keyOnlyTokens.reduce((acc, prob) => acc * prob, 1)
-                : 0;
-
-            confidenceScores.push(confidence);
-            confidenceResults[key] = {
-                value,
-                confidence: Math.min(1, confidence),
-            };
-        }
-    });
-
-    // Calculate min and average confidence scores
-    const minConfidence = confidenceScores.length > 0 ? Math.min(...confidenceScores) : 0;
-    const avgConfidence = confidenceScores.length > 0 
-        ? confidenceScores.reduce((sum, score) => sum + score, 0) / confidenceScores.length
-        : 0;
-
-    return {
-        confidenceResults,
-        confidenceScores,
-        minConfidence,
-        avgConfidence
-    };
-}
+import jsonSchemaGenerator from 'json-schema-generator';
 
 /**
  * Calculates confidence scores for OpenAI model outputs
  * @param {Object} jsonOutput - The JSON output to validate
- * @param {Object} logprobs - Logprobs object from OpenAI API response
+ * @param {Array<Object>} logprobs - Raw logprobs array from OpenAI API response
  * @param {Object} [schema=null] - Optional JSON schema
  * @returns {Object} - Confidence scores for each field
  */
 export function calculateOpenAIConfidenceScores(jsonOutput, logprobs, schema = null) {
-    const { tokens, token_logprobs } = logprobs;
-    const token_probs = token_logprobs.map(logprob => Math.exp(logprob));
+    const tokens = logprobs.map(item => item.token);
+    const token_probs = logprobs.map(item => Math.exp(item.logprob));
 
-    if (schema) {
-        const schemaProperties = schema.properties || {};
-        const requiredFields = schema.required || [];
-        return calculateSchemaConfidence(jsonOutput, schemaProperties, tokens, token_probs, requiredFields);
-    } else {
-        return calculateNestedConfidence(jsonOutput, tokens, token_probs);
-    }
+    // Generate schema if none provided
+    const effectiveSchema = schema || jsonSchemaGenerator(jsonOutput);
+    console.log(effectiveSchema);
+    const schemaProperties = effectiveSchema.properties || {};
+    const requiredFields = effectiveSchema.required || [];
+    
+    return calculateSchemaConfidence(jsonOutput, schemaProperties, tokens, token_probs, requiredFields);
 }
 
 /**
@@ -113,9 +29,10 @@ export function calculateOpenAIConfidenceScores(jsonOutput, logprobs, schema = n
  * @param {Array<string>} tokens - Tokens from the logprobs.
  * @param {Array<number>} token_probs - Token probabilities.
  * @param {Array<string>} requiredFields - Required fields from the schema.
+ * @param {string} parentKey - The parent key for nested structures.
  * @returns {Object} - Schema-based confidence scores.
  */
-function calculateSchemaConfidence(jsonOutput, schemaProperties, tokens, token_probs, requiredFields) {
+function calculateSchemaConfidence(jsonOutput, schemaProperties, tokens, token_probs, requiredFields, parentKey = '') {
     const confidenceScores = [];
     const confidenceResults = {};
 
@@ -133,23 +50,76 @@ function calculateSchemaConfidence(jsonOutput, schemaProperties, tokens, token_p
         const value = jsonOutput[key];
         const type = schemaProperty.type;
         const isRequired = requiredFields.includes(key);
+        const fullKey = parentKey ? `${parentKey}.${key}` : key;
 
         if (value !== undefined) {
             // Check if value matches the schema type
             const isValid = validateType(value, type);
 
             // Calculate confidence based on tokens and their probabilities
-            const relevantTokens = findRelevantTokens(tokens, token_probs, key, value);
+            const relevantTokens = findRelevantTokens(tokens, token_probs, fullKey, value);
             const confidence = relevantTokens.length > 0 
-                ? relevantTokens.reduce((acc, prob) => acc * prob, 1)
+                ? relevantTokens.reduce((acc, prob) => acc + prob, 0) / relevantTokens.length
                 : 0;
 
             confidenceScores.push(confidence);
-            confidenceResults[key] = {
-                value,
-                isValid,
-                confidence: Math.min(1, confidence),
-            };
+
+            // Handle nested objects and arrays
+            if (type === 'object' && schemaProperty.properties) {
+                const nestedConfidence = calculateSchemaConfidence(
+                    value,
+                    schemaProperty.properties,
+                    tokens,
+                    token_probs,
+                    schemaProperty.required || [],
+                    fullKey
+                );
+                
+                confidenceResults[key] = {
+                    value,
+                    isValid,
+                    confidence: Math.min(1, confidence),
+                    ...nestedConfidence
+                };
+            } else if (type === 'array' && schemaProperty.items) {
+                // Handle array items
+                const arrayConfidence = value.map((item, index) => {
+                    if (schemaProperty.items.type === 'object' && schemaProperty.items.properties) {
+                        return calculateSchemaConfidence(
+                            item,
+                            schemaProperty.items.properties,
+                            tokens,
+                            token_probs,
+                            schemaProperty.items.required || [],
+                            `${fullKey}[${index}]`
+                        );
+                    } else {
+                        const itemTokens = findRelevantTokens(tokens, token_probs, `${fullKey}[${index}]`, item);
+                        const itemConfidence = itemTokens.length > 0 
+                            ? itemTokens.reduce((acc, prob) => acc + prob, 0) / itemTokens.length
+                            : 0;
+                        
+                        return {
+                            value: item,
+                            isValid: validateType(item, schemaProperty.items.type),
+                            confidence: Math.min(1, itemConfidence)
+                        };
+                    }
+                });
+
+                confidenceResults[key] = {
+                    value,
+                    isValid,
+                    confidence: Math.min(1, confidence),
+                    items: arrayConfidence
+                };
+            } else {
+                confidenceResults[key] = {
+                    value,
+                    isValid,
+                    confidence: Math.min(1, confidence),
+                };
+            }
         } else {
             // Handle missing fields
             confidenceScores.push(0);
