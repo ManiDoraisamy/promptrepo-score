@@ -15,7 +15,6 @@ export function calculateOpenAIConfidenceScores(jsonOutput, logprobs, schema = n
 
     // Generate schema if none provided
     const effectiveSchema = schema || jsonSchemaGenerator(jsonOutput);
-    console.log(effectiveSchema);
     const schemaProperties = effectiveSchema.properties || {};
     const requiredFields = effectiveSchema.required || [];
     
