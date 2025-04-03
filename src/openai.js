@@ -9,29 +9,27 @@ import jsonSchemaGenerator from 'json-schema-generator';
  * @param {Object} [schema=null] - Optional JSON schema
  * @returns {Object} - Confidence scores for each field
  */
-export function calculateOpenAIConfidenceScores(jsonOutput, logprobs, schema = null) {
+export function calculateConfidenceScores(jsonOutput, logprobs, schema = null) {
     const tokens = logprobs.map(item => item.token);
     const token_probs = logprobs.map(item => Math.exp(item.logprob));
 
     // Generate schema if none provided
     const effectiveSchema = schema || jsonSchemaGenerator(jsonOutput);
     const schemaProperties = effectiveSchema.properties || {};
-    const requiredFields = effectiveSchema.required || [];
     
-    return calculateSchemaConfidence(jsonOutput, schemaProperties, tokens, token_probs, requiredFields);
+    return calculateSchemaConfidence(jsonOutput, schemaProperties, tokens, token_probs);
 }
 
 /**
  * Calculates schema-based confidence scores for JSON output.
  * @param {Object} jsonOutput - JSON output to validate.
- * @param {Object} schemaProperties - Schema properties to validate against.
+ * @param {Object} schemaProperties - Schema properties to iterate over JSON output.
  * @param {Array<string>} tokens - Tokens from the logprobs.
  * @param {Array<number>} token_probs - Token probabilities.
- * @param {Array<string>} requiredFields - Required fields from the schema.
  * @param {string} parentKey - The parent key for nested structures.
  * @returns {Object} - Schema-based confidence scores.
  */
-function calculateSchemaConfidence(jsonOutput, schemaProperties, tokens, token_probs, requiredFields, parentKey = '') {
+function calculateSchemaConfidence(jsonOutput, schemaProperties, tokens, token_probs, parentKey = '') {
     const confidenceResults = {};
     let minConfidence = 1;
     let totalConfidence = 0;
@@ -61,7 +59,6 @@ function calculateSchemaConfidence(jsonOutput, schemaProperties, tokens, token_p
                     
                     return {
                         value: item,
-                        isValid: true,
                         confidence: itemConfidence
                     };
                 });
@@ -74,7 +71,6 @@ function calculateSchemaConfidence(jsonOutput, schemaProperties, tokens, token_p
 
                 confidenceResults[key] = {
                     value,
-                    isValid: true,
                     confidence,
                     confidenceResults: arrayResults,
                     minConfidence: minItemConfidence,
@@ -87,43 +83,28 @@ function calculateSchemaConfidence(jsonOutput, schemaProperties, tokens, token_p
                     schema?.properties || {},
                     tokens,
                     token_probs,
-                    schema?.required || [],
                     fullKey
                 );
-                
+
                 // Make nested values directly accessible
-                const nestedConfidenceResults = {};
-                for (const [nestedKey, nestedValue] of Object.entries(value)) {
-                    const nestedTokens = findRelevantTokens(tokens, token_probs, `${fullKey}.${nestedKey}`, nestedValue);
-                    const nestedConfidence = nestedTokens.length > 0 
-                        ? nestedTokens.reduce((acc, prob) => acc + prob, 0) / nestedTokens.length
-                        : 0;
-                    
-                    nestedConfidenceResults[nestedKey] = {
-                        value: nestedValue,
-                        isValid: true,
-                        confidence: nestedConfidence
-                    };
-                }
-                
                 confidenceResults[key] = {
                     value,
-                    isValid: true,
                     confidence,
-                    ...nestedConfidenceResults,
-                    confidenceResults: nestedConfidenceResults,
+                    ...nestedResults.confidenceResults,
+                    confidenceResults: nestedResults.confidenceResults,
                     minConfidence: nestedResults.minConfidence,
                     avgConfidence: nestedResults.avgConfidence
                 };
             }
         } else {
+            // Handle primitive values
             confidenceResults[key] = {
                 value,
-                isValid: true,
                 confidence
             };
         }
 
+        // Update min and average confidence
         if (confidence > 0) {
             minConfidence = Math.min(minConfidence, confidence);
             totalConfidence += confidence;
@@ -131,11 +112,10 @@ function calculateSchemaConfidence(jsonOutput, schemaProperties, tokens, token_p
         }
     }
 
-    const avgConfidence = validCount > 0 ? totalConfidence / validCount : 0;
     return {
         confidenceResults,
-        minConfidence: minConfidence === 1 ? 0 : minConfidence,
-        avgConfidence
+        minConfidence: validCount > 0 ? minConfidence : 0,
+        avgConfidence: validCount > 0 ? totalConfidence / validCount : 0
     };
 }
 

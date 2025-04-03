@@ -1,4 +1,4 @@
-import { calculateOpenAIConfidenceScores } from '../src/openai.js';
+import { calculateConfidenceScores } from '../src/openai.js';
 import nutriData from './nutri.test.json';
 
 describe('Nutrition Data Confidence Score Tests', () => {
@@ -6,7 +6,7 @@ describe('Nutrition Data Confidence Score Tests', () => {
         const { data, logprobs: rawLogprobs } = nutriData;
         
         // Calculate confidence scores using raw logprobs
-        const result = calculateOpenAIConfidenceScores(data, rawLogprobs);
+        const result = calculateConfidenceScores(data, rawLogprobs);
         console.log(result);
 
         // Test basic structure
@@ -86,22 +86,19 @@ describe('Nutrition Data Confidence Score Tests', () => {
             }
         };
 
-        const result = calculateOpenAIConfidenceScores(data, rawLogprobs, schema);
+        const result = calculateConfidenceScores(data, rawLogprobs, schema);
 
         // Test schema validation results
         expect(result.confidenceResults['Product name']).toBeDefined();
         expect(result.confidenceResults['Product name'].value).toBe('八宝饭 Eight Jewel Rice Pudding (GF)');
         expect(result.confidenceResults['Product name'].confidence).toBeGreaterThan(0);
-        expect(result.confidenceResults['Product name'].isValid).toBe(true);
 
         expect(result.confidenceResults['Price']).toBeDefined();
         expect(result.confidenceResults['Price'].value).toBe('12');
         expect(result.confidenceResults['Price'].confidence).toBeGreaterThan(0);
-        expect(result.confidenceResults['Price'].isValid).toBe(true);
 
         expect(result.confidenceResults['Ingredients']).toBeDefined();
         expect(Array.isArray(result.confidenceResults['Ingredients'].value)).toBe(true);
         expect(result.confidenceResults['Ingredients'].confidence).toBeGreaterThan(0);
-        expect(result.confidenceResults['Ingredients'].isValid).toBe(true);
     });
 }); 

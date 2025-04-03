@@ -1,4 +1,4 @@
-import { calculateOpenAIConfidenceScores } from './openai.js';
+import { calculateConfidenceScores as calculateOpenAIConfidenceScores } from './openai.js';
 import { evaluate } from './semantic.js';
 
 /**

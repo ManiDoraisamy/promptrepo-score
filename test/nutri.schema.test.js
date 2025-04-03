@@ -1,4 +1,4 @@
-import { calculateOpenAIConfidenceScores } from '../src/openai.js';
+import { calculateConfidenceScores } from '../src/openai.js';
 import nutriSchemaData from './nutri.schema.json' assert { type: 'json' };
 
 describe('Nutrition Schema Data Confidence Score Tests', () => {
@@ -6,7 +6,7 @@ describe('Nutrition Schema Data Confidence Score Tests', () => {
         const { data, logprobs: rawLogprobs, schema } = nutriSchemaData;
         
         // Calculate confidence scores using raw logprobs and schema
-        const result = calculateOpenAIConfidenceScores(data, rawLogprobs, schema);
+        const result = calculateConfidenceScores(data, rawLogprobs, schema);
         console.log(result);
 
         // Test basic structure
@@ -25,12 +25,10 @@ describe('Nutrition Schema Data Confidence Score Tests', () => {
         expect(confidenceResults['Currency']).toBeDefined();
         expect(confidenceResults['Currency'].value).toBe('$');
         expect(confidenceResults['Currency'].confidence).toBeGreaterThan(0);
-        expect(confidenceResults['Currency'].isValid).toBe(true);
 
         expect(confidenceResults['Page type']).toBeDefined();
         expect(confidenceResults['Page type'].value).toBe('product');
         expect(confidenceResults['Page type'].confidence).toBeGreaterThan(0);
-        expect(confidenceResults['Page type'].isValid).toBe(true);
 
         // Test array fields
         expect(confidenceResults['Ingredients']).toBeDefined();
@@ -42,7 +40,6 @@ describe('Nutrition Schema Data Confidence Score Tests', () => {
             'Pumpkin Sugar'
         ]);
         expect(confidenceResults['Ingredients'].confidence).toBeGreaterThan(0);
-        expect(confidenceResults['Ingredients'].isValid).toBe(true);
 
         // Test nested nutrition data
         expect(confidenceResults['Nutrition per serving']).toBeDefined();
@@ -51,15 +48,12 @@ describe('Nutrition Schema Data Confidence Score Tests', () => {
         // Test specific nutrition fields
         expect(nutritionData['Calories (Kcal)']).toBe(400);
         expect(confidenceResults['Nutrition per serving'].confidence).toBeGreaterThan(0);
-        expect(confidenceResults['Nutrition per serving'].isValid).toBe(true);
         
         expect(nutritionData['Carbohydrates (g)']).toBe(80);
         expect(confidenceResults['Nutrition per serving'].confidence).toBeGreaterThan(0);
-        expect(confidenceResults['Nutrition per serving'].isValid).toBe(true);
         
         expect(nutritionData['Protein (g)']).toBe(8);
         expect(confidenceResults['Nutrition per serving'].confidence).toBeGreaterThan(0);
-        expect(confidenceResults['Nutrition per serving'].isValid).toBe(true);
 
         // Test allergens
         expect(confidenceResults['Allergens']).toBeDefined();
@@ -69,17 +63,14 @@ describe('Nutrition Schema Data Confidence Score Tests', () => {
             'Nuts'
         ]);
         expect(confidenceResults['Allergens'].confidence).toBeGreaterThan(0);
-        expect(confidenceResults['Allergens'].isValid).toBe(true);
 
         // Test meta information
         expect(confidenceResults['Meta Information']).toBeDefined();
         const metaInfo = confidenceResults['Meta Information'];
         expect(metaInfo['og:title'].value).toBe('八宝饭 Eight Jewel Rice Pudding (GF)');
         expect(metaInfo['og:title'].confidence).toBeGreaterThan(0);
-        expect(metaInfo['og:title'].isValid).toBe(true);
         expect(metaInfo['og:price:amount'].value).toBe(12);
         expect(metaInfo['og:price:amount'].confidence).toBeGreaterThan(0);
-        expect(metaInfo['og:price:amount'].isValid).toBe(true);
     });
 
     test('should calculate confidence scores with schema validation', () => {
@@ -95,22 +86,19 @@ describe('Nutrition Schema Data Confidence Score Tests', () => {
             }
         };
 
-        const result = calculateOpenAIConfidenceScores(data, rawLogprobs, schema);
+        const result = calculateConfidenceScores(data, rawLogprobs, schema);
 
         // Test schema validation results
         expect(result.confidenceResults['Currency']).toBeDefined();
         expect(result.confidenceResults['Currency'].value).toBe('$');
         expect(result.confidenceResults['Currency'].confidence).toBeGreaterThan(0);
-        expect(result.confidenceResults['Currency'].isValid).toBe(true);
 
         expect(result.confidenceResults['Page type']).toBeDefined();
         expect(result.confidenceResults['Page type'].value).toBe('product');
         expect(result.confidenceResults['Page type'].confidence).toBeGreaterThan(0);
-        expect(result.confidenceResults['Page type'].isValid).toBe(true);
 
         expect(result.confidenceResults['Ingredients']).toBeDefined();
         expect(Array.isArray(result.confidenceResults['Ingredients'].value)).toBe(true);
         expect(result.confidenceResults['Ingredients'].confidence).toBeGreaterThan(0);
-        expect(result.confidenceResults['Ingredients'].isValid).toBe(true);
     });
 }); 

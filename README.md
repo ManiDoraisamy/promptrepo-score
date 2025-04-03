@@ -19,10 +19,10 @@ npm install @promptrepo/score
 ## In Action
 
 ```javascript
-import { calculateOpenAIConfidenceScores } from '@promptrepo/score';
+import { calculateConfidenceScores } from '@promptrepo/score';
 
 // Your OpenAI response with JSON and logprobs
-const result = calculateOpenAIConfidenceScores(jsonOutput, logprobs);
+const result = calculateConfidenceScores(jsonOutput, logprobs);
 
 // Get confidence scores for each field
 console.log(result.confidenceResults);
@@ -45,7 +45,7 @@ console.log(result.avgConfidence); // 0.935
 
 ## API Reference
 
-### calculateOpenAIConfidenceScores(jsonOutput, logprobs, schema?)
+### calculateConfidenceScores(jsonOutput, logprobs, schema?)
 
 #### Parameters
 - `jsonOutput` (Object): The JSON output to validate
@@ -82,7 +82,7 @@ const schema = {
     }
 };
 
-const result = calculateOpenAIConfidenceScores(
+const result = calculateConfidenceScores(
     { name: 'Product', price: '19.99' },
     logprobs,
     schema
@@ -91,7 +91,7 @@ const result = calculateOpenAIConfidenceScores(
 
 ### Nested Structures
 ```javascript
-const result = calculateOpenAIConfidenceScores({
+const result = calculateConfidenceScores({
     product: {
         details: {
             name: 'Product',
