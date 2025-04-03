@@ -46,20 +46,20 @@ describe('Nutrition Schema Data Confidence Score Tests', () => {
 
         // Test nested nutrition data
         expect(confidenceResults['Nutrition per serving']).toBeDefined();
-        const nutritionData = confidenceResults['Nutrition per serving'];
-        
+        const nutritionData = confidenceResults['Nutrition per serving'].value;
+
         // Test specific nutrition fields
-        expect(nutritionData['Calories (Kcal)'].value).toBe(400);
-        expect(nutritionData['Calories (Kcal)'].confidence).toBeGreaterThan(0);
-        expect(nutritionData['Calories (Kcal)'].isValid).toBe(true);
+        expect(nutritionData['Calories (Kcal)']).toBe(400);
+        expect(confidenceResults['Nutrition per serving'].confidence).toBeGreaterThan(0);
+        expect(confidenceResults['Nutrition per serving'].isValid).toBe(true);
         
-        expect(nutritionData['Carbohydrates (g)'].value).toBe(80);
-        expect(nutritionData['Carbohydrates (g)'].confidence).toBeGreaterThan(0);
-        expect(nutritionData['Carbohydrates (g)'].isValid).toBe(true);
+        expect(nutritionData['Carbohydrates (g)']).toBe(80);
+        expect(confidenceResults['Nutrition per serving'].confidence).toBeGreaterThan(0);
+        expect(confidenceResults['Nutrition per serving'].isValid).toBe(true);
         
-        expect(nutritionData['Protein (g)'].value).toBe(8);
-        expect(nutritionData['Protein (g)'].confidence).toBeGreaterThan(0);
-        expect(nutritionData['Protein (g)'].isValid).toBe(true);
+        expect(nutritionData['Protein (g)']).toBe(8);
+        expect(confidenceResults['Nutrition per serving'].confidence).toBeGreaterThan(0);
+        expect(confidenceResults['Nutrition per serving'].isValid).toBe(true);
 
         // Test allergens
         expect(confidenceResults['Allergens']).toBeDefined();

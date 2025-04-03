@@ -32,140 +32,111 @@ export function calculateOpenAIConfidenceScores(jsonOutput, logprobs, schema = n
  * @returns {Object} - Schema-based confidence scores.
  */
 function calculateSchemaConfidence(jsonOutput, schemaProperties, tokens, token_probs, requiredFields, parentKey = '') {
-    const confidenceScores = [];
     const confidenceResults = {};
+    let minConfidence = 1;
+    let totalConfidence = 0;
+    let validCount = 0;
 
-    // Handle empty schema case
-    if (Object.keys(schemaProperties).length === 0) {
-        return {
-            confidenceResults: {},
-            minConfidence: 0,
-            avgConfidence: 0
-        };
-    }
-
-    Object.keys(schemaProperties).forEach((key) => {
-        const schemaProperty = schemaProperties[key];
-        const value = jsonOutput[key];
-        const type = schemaProperty.type;
-        const isRequired = requiredFields.includes(key);
+    // Process all fields in jsonOutput
+    for (const [key, value] of Object.entries(jsonOutput)) {
         const fullKey = parentKey ? `${parentKey}.${key}` : key;
+        const schema = schemaProperties[key];
 
-        if (value !== undefined) {
-            // Check if value matches the schema type
-            const isValid = validateType(value, type);
+        // Calculate confidence based on tokens and their probabilities
+        const relevantTokens = findRelevantTokens(tokens, token_probs, fullKey, value);
+        const confidence = relevantTokens.length > 0 
+            ? relevantTokens.reduce((acc, prob) => acc + prob, 0) / relevantTokens.length
+            : 0;
 
-            // Calculate confidence based on tokens and their probabilities
-            const relevantTokens = findRelevantTokens(tokens, token_probs, fullKey, value);
-            const confidence = relevantTokens.length > 0 
-                ? relevantTokens.reduce((acc, prob) => acc + prob, 0) / relevantTokens.length
-                : 0;
+        // Handle nested objects and arrays
+        if (typeof value === 'object' && value !== null) {
+            if (Array.isArray(value)) {
+                // Handle arrays
+                const arrayResults = value.map((item, index) => {
+                    const itemKey = `${fullKey}[${index}]`;
+                    const itemTokens = findRelevantTokens(tokens, token_probs, itemKey, item);
+                    const itemConfidence = itemTokens.length > 0 
+                        ? itemTokens.reduce((acc, prob) => acc + prob, 0) / itemTokens.length
+                        : 0;
+                    
+                    return {
+                        value: item,
+                        isValid: true,
+                        confidence: itemConfidence
+                    };
+                });
 
-            confidenceScores.push(confidence);
+                const itemConfidences = arrayResults.map(item => item.confidence);
+                const minItemConfidence = itemConfidences.length > 0 ? Math.min(...itemConfidences) : 0;
+                const avgItemConfidence = itemConfidences.length > 0 
+                    ? itemConfidences.reduce((sum, conf) => sum + conf, 0) / itemConfidences.length
+                    : 0;
 
-            // Handle nested objects and arrays
-            if (type === 'object' && schemaProperty.properties) {
-                const nestedConfidence = calculateSchemaConfidence(
+                confidenceResults[key] = {
                     value,
-                    schemaProperty.properties,
+                    isValid: true,
+                    confidence,
+                    confidenceResults: arrayResults,
+                    minConfidence: minItemConfidence,
+                    avgConfidence: avgItemConfidence
+                };
+            } else {
+                // Handle objects
+                const nestedResults = calculateSchemaConfidence(
+                    value,
+                    schema?.properties || {},
                     tokens,
                     token_probs,
-                    schemaProperty.required || [],
+                    schema?.required || [],
                     fullKey
                 );
                 
+                // Make nested values directly accessible
+                const nestedConfidenceResults = {};
+                for (const [nestedKey, nestedValue] of Object.entries(value)) {
+                    const nestedTokens = findRelevantTokens(tokens, token_probs, `${fullKey}.${nestedKey}`, nestedValue);
+                    const nestedConfidence = nestedTokens.length > 0 
+                        ? nestedTokens.reduce((acc, prob) => acc + prob, 0) / nestedTokens.length
+                        : 0;
+                    
+                    nestedConfidenceResults[nestedKey] = {
+                        value: nestedValue,
+                        isValid: true,
+                        confidence: nestedConfidence
+                    };
+                }
+                
                 confidenceResults[key] = {
                     value,
-                    isValid,
-                    confidence: Math.min(1, confidence),
-                    ...nestedConfidence
-                };
-            } else if (type === 'array' && schemaProperty.items) {
-                // Handle array items
-                const arrayConfidence = value.map((item, index) => {
-                    if (schemaProperty.items.type === 'object' && schemaProperty.items.properties) {
-                        return calculateSchemaConfidence(
-                            item,
-                            schemaProperty.items.properties,
-                            tokens,
-                            token_probs,
-                            schemaProperty.items.required || [],
-                            `${fullKey}[${index}]`
-                        );
-                    } else {
-                        const itemTokens = findRelevantTokens(tokens, token_probs, `${fullKey}[${index}]`, item);
-                        const itemConfidence = itemTokens.length > 0 
-                            ? itemTokens.reduce((acc, prob) => acc + prob, 0) / itemTokens.length
-                            : 0;
-                        
-                        return {
-                            value: item,
-                            isValid: validateType(item, schemaProperty.items.type),
-                            confidence: Math.min(1, itemConfidence)
-                        };
-                    }
-                });
-
-                confidenceResults[key] = {
-                    value,
-                    isValid,
-                    confidence: Math.min(1, confidence),
-                    items: arrayConfidence
-                };
-            } else {
-                confidenceResults[key] = {
-                    value,
-                    isValid,
-                    confidence: Math.min(1, confidence),
+                    isValid: true,
+                    confidence,
+                    ...nestedConfidenceResults,
+                    confidenceResults: nestedConfidenceResults,
+                    minConfidence: nestedResults.minConfidence,
+                    avgConfidence: nestedResults.avgConfidence
                 };
             }
         } else {
-            // Handle missing fields
-            confidenceScores.push(0);
             confidenceResults[key] = {
-                value: null,
-                isValid: !isRequired,
-                confidence: 0,
+                value,
+                isValid: true,
+                confidence
             };
         }
-    });
 
-    // Calculate min and average confidence scores
-    const minConfidence = confidenceScores.length > 0 ? Math.min(...confidenceScores) : 0;
-    const avgConfidence = confidenceScores.length > 0 
-        ? confidenceScores.reduce((sum, score) => sum + score, 0) / confidenceScores.length
-        : 0;
+        if (confidence > 0) {
+            minConfidence = Math.min(minConfidence, confidence);
+            totalConfidence += confidence;
+            validCount++;
+        }
+    }
 
+    const avgConfidence = validCount > 0 ? totalConfidence / validCount : 0;
     return {
         confidenceResults,
-        minConfidence,
+        minConfidence: minConfidence === 1 ? 0 : minConfidence,
         avgConfidence
     };
-}
-
-/**
- * Function to validate a value against a type.
- * @param {any} value - The value to validate.
- * @param {string} type - The expected type.
- * @returns {boolean} - Whether the value is valid for the type.
- */
-function validateType(value, type) {
-    switch (type) {
-        case "string":
-            return typeof value === "string";
-        case "number":
-            return typeof value === "number";
-        case "integer":
-            return Number.isInteger(value);
-        case "boolean":
-            return typeof value === "boolean";
-        case "object":
-            return typeof value === "object" && !Array.isArray(value);
-        case "array":
-            return Array.isArray(value);
-        default:
-            return false;
-    }
 }
 
 /**
