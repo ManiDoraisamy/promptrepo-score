@@ -7,7 +7,6 @@ describe('Nutrition Data Confidence Score Tests', () => {
         
         // Calculate confidence scores using raw logprobs
         const result = calculateConfidenceScores(data, rawLogprobs);
-        console.log(result);
 
         // Test basic structure
         expect(result).toHaveProperty('confidenceResults');

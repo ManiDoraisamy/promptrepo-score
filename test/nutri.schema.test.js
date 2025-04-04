@@ -7,7 +7,6 @@ describe('Nutrition Schema Data Confidence Score Tests', () => {
         
         // Calculate confidence scores using raw logprobs and schema
         const result = calculateConfidenceScores(data, rawLogprobs, schema);
-        console.log(result);
 
         // Test basic structure
         expect(result).toHaveProperty('confidenceResults');
