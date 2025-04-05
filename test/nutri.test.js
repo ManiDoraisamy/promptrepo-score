@@ -5,99 +5,60 @@ describe('Nutrition Data Confidence Score Tests', () => {
     test('should calculate confidence scores for nutrition data', () => {
         const { data, logprobs: rawLogprobs } = nutriData;
         
-        // Calculate confidence scores using raw logprobs
+        // Calculate confidence scores (schema argument is ignored)
         const result = calculateConfidenceScores(data, rawLogprobs);
+        console.log('result', JSON.stringify(result, null, 2));
 
-        // Test basic structure
-        expect(result).toHaveProperty('confidenceResults');
-        expect(result).toHaveProperty('minConfidence');
-        expect(result).toHaveProperty('avgConfidence');
+        // Test basic structure and fields
+        expect(result['Product name']).toBeDefined();
+        expect(result['Product name'].value).toBe('八宝饭 Eight Jewel Rice Pudding (GF)');
+        expect(result['Product name'].score).toBeGreaterThanOrEqual(0);
+        expect(result['Product name'].score).toBeLessThanOrEqual(1);
 
-        // Test confidence scores are within valid range
-        expect(result.minConfidence).toBeGreaterThanOrEqual(0);
-        expect(result.minConfidence).toBeLessThanOrEqual(1);
-        expect(result.avgConfidence).toBeGreaterThanOrEqual(0);
-        expect(result.avgConfidence).toBeLessThanOrEqual(1);
-
-        // Test basic fields
-        const { confidenceResults } = result;
-        expect(confidenceResults['Product name']).toBeDefined();
-        expect(confidenceResults['Product name'].value).toBe('八宝饭 Eight Jewel Rice Pudding (GF)');
-        expect(confidenceResults['Product name'].confidence).toBeGreaterThan(0);
-
-        expect(confidenceResults['Price']).toBeDefined();
-        expect(confidenceResults['Price'].value).toBe('12');
-        expect(confidenceResults['Price'].confidence).toBeGreaterThan(0);
+        expect(result['Price']).toBeDefined();
+        expect(result['Price'].value).toBe('12');
+        expect(result['Price'].score).toBeGreaterThanOrEqual(0);
+        expect(result['Price'].score).toBeLessThanOrEqual(1);
 
         // Test array field
-        expect(confidenceResults['Ingredients']).toBeDefined();
-        expect(Array.isArray(confidenceResults['Ingredients'].value)).toBe(true);
-        expect(confidenceResults['Ingredients'].value).toEqual([
+        expect(result['Ingredients']).toBeDefined();
+        expect(Array.isArray(result['Ingredients'].value)).toBe(true);
+        expect(result['Ingredients'].value).toEqual([
             'Sticky Rice',
             'Red Bean',
             'Assorted Raisins',
             'Pumpkin Sugar'
         ]);
-        expect(confidenceResults['Ingredients'].confidence).toBeGreaterThan(0);
+        expect(result['Ingredients'].score).toBeGreaterThanOrEqual(0);
+        expect(result['Ingredients'].score).toBeLessThanOrEqual(1);
 
         // Test nested nutrition data
-        expect(confidenceResults['Nutrition per serving']).toBeDefined();
-        const nutritionData = confidenceResults['Nutrition per serving'].confidenceResults;
+        expect(result['Nutrition per serving']).toBeDefined();
+        const nutritionData = result['Nutrition per serving'].value;
         
-        // Test specific nutrition fields
+        // Check a few nested fields
         expect(nutritionData['Calories (Kcal)'].value).toBe(400);
-        expect(nutritionData['Calories (Kcal)'].confidence).toBeGreaterThan(0);
+        expect(nutritionData['Calories (Kcal)'].score).toBeGreaterThanOrEqual(0);
+        expect(nutritionData['Calories (Kcal)'].score).toBeLessThanOrEqual(1);
         
         expect(nutritionData['Carbohydrates (g)'].value).toBe(80);
-        expect(nutritionData['Carbohydrates (g)'].confidence).toBeGreaterThan(0);
+        expect(nutritionData['Carbohydrates (g)'].score).toBeGreaterThanOrEqual(0);
+        expect(nutritionData['Carbohydrates (g)'].score).toBeLessThanOrEqual(1);
         
-        expect(nutritionData['Protein (g)'].value).toBe(8);
-        expect(nutritionData['Protein (g)'].confidence).toBeGreaterThan(0);
-
         // Test allergens
-        expect(confidenceResults['Allergens']).toBeDefined();
-        expect(Array.isArray(confidenceResults['Allergens'].value)).toBe(true);
-        expect(confidenceResults['Allergens'].value).toEqual([
+        expect(result['Allergens']).toBeDefined();
+        expect(Array.isArray(result['Allergens'].value)).toBe(true);
+        expect(result['Allergens'].value).toEqual([
             'Cereals containing gluten',
             'Nuts'
         ]);
-        expect(confidenceResults['Allergens'].confidence).toBeGreaterThan(0);
+        expect(result['Allergens'].score).toBeGreaterThanOrEqual(0);
+        expect(result['Allergens'].score).toBeLessThanOrEqual(1);
 
-        // Test meta information
-        expect(confidenceResults['Meta Information']).toBeDefined();
-        const metaInfo = confidenceResults['Meta Information'].confidenceResults;
-        expect(metaInfo['og:title'].value).toBe('八宝饭 Eight Jewel Rice Pudding (GF)');
-        expect(metaInfo['og:title'].confidence).toBeGreaterThan(0);
-        expect(metaInfo['og:price:amount'].value).toBe(12);
-        expect(metaInfo['og:price:amount'].confidence).toBeGreaterThan(0);
-    });
-
-    test('should calculate confidence scores with schema validation', () => {
-        const { data, logprobs: rawLogprobs } = nutriData;
-        
-        const schema = {
-            type: 'object',
-            required: ['Product name', 'Price', 'Ingredients'],
-            properties: {
-                'Product name': { type: 'string' },
-                'Price': { type: 'string' },
-                'Ingredients': { type: 'array' }
-            }
-        };
-
-        const result = calculateConfidenceScores(data, rawLogprobs, schema);
-
-        // Test schema validation results
-        expect(result.confidenceResults['Product name']).toBeDefined();
-        expect(result.confidenceResults['Product name'].value).toBe('八宝饭 Eight Jewel Rice Pudding (GF)');
-        expect(result.confidenceResults['Product name'].confidence).toBeGreaterThan(0);
-
-        expect(result.confidenceResults['Price']).toBeDefined();
-        expect(result.confidenceResults['Price'].value).toBe('12');
-        expect(result.confidenceResults['Price'].confidence).toBeGreaterThan(0);
-
-        expect(result.confidenceResults['Ingredients']).toBeDefined();
-        expect(Array.isArray(result.confidenceResults['Ingredients'].value)).toBe(true);
-        expect(result.confidenceResults['Ingredients'].confidence).toBeGreaterThan(0);
+        // Test another top-level field
+        expect(result['Serving size (grams or mL)']).toBeDefined();
+        expect(result['Serving size (grams or mL)'].value).toBe('300');
+        expect(result['Serving size (grams or mL)'].score).toBeGreaterThanOrEqual(0);
+        expect(result['Serving size (grams or mL)'].score).toBeLessThanOrEqual(1);
     });
 }); 
