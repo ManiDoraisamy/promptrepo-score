@@ -11,12 +11,12 @@ function loopData(jsonOutput, logprobs, position=0)
         let value = jsonOutput[key];
         let search = '';
         if(value === null || value === undefined)
-            search = `"${key}":null`;
+            search = `null`;
         else if(typeof value === 'string')
-            search = `"${key}":"${value}"`;
+            search = `"${value}"`;
         else if(Array.isArray(value))
         {
-            search = `"${key}":${JSON.stringify(value)}`;
+            search = JSON.stringify(value);
             value = value.map(v=>{
                 if(v === null || v === undefined || Array.isArray(v))
                     return v;
@@ -28,19 +28,19 @@ function loopData(jsonOutput, logprobs, position=0)
         }
         else if(typeof value === 'object')
         {
-            search = `"${key}":${JSON.stringify(value)}`;
+            search = JSON.stringify(value);
             value = loopData(value, logprobs, position);
         }
         else
-            search = `"${key}":${value}`;
-        const {score, pos} = getScore(logprobs, search, position);
+            search = value;
+        const {score, pos} = getScore(logprobs, key, search, position);
         scores[key] = {value, score};
         position = pos;
     }
     return scores;
 }
 
-function getScore(logprobs, search, position)
+function getScore(logprobs, key, search, position)
 {
     var logproblist = [];
     var init = position;
@@ -49,7 +49,7 @@ function getScore(logprobs, search, position)
         var logprob = logprobs[init];
         logproblist.push(logprob);
         var part = logproblist.map(l=>l.token).join('');
-        if(part.includes(search))
+        if(part.includes(`"${key}":${search}`) || part.includes(`"${key}": ${search}`))
         {
             const scoreSum = logproblist.map(l=>l.logprob).reduce((a,b)=>a+b, 0);
             let score = Math.exp(scoreSum/logproblist.length);
