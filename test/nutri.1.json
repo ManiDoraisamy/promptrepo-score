@@ -1,0 +1,2564 @@
+{
+    "data": {
+        "Currency": "$",
+        "Page type": "product",
+        "Google category": "Food Items",
+        "Sold by": "quantity",
+        "Product name": "Chicken Stew",
+        "Product image": "https://readystrongmeals.com/wp-content/uploads/2024/01/chicken-stew-1.jpg",
+        "Product description": "Enjoy this hearty wintery stew!\n",
+        "Price": "12.99",
+        "Ingredients": [
+            "Quarter leg chicken on the bone",
+            "Tomato",
+            "Tomato sauce",
+            "Chickpeas",
+            "Potatoes",
+            "Carrots",
+            "Celery",
+            "Broth",
+            "Spices",
+            "Herbs"
+        ],
+        "Nutrition per serving": {
+            "Calories (Kcal)": 428,
+            "Carbohydrates (g)": 26,
+            "Fat (g)": 20,
+            "Saturated Fat (g)": 6,
+            "Protein (g)": 36,
+            "Salt (g)": 1.5,
+            "Sugar (g)": 4,
+            "Sodium (mg)": 600,
+            "Fiber (g)": 6
+        },
+        "Nutrition category": "General foods",
+        "Serving size (grams or mL)": 300,
+        "Allergens": [],
+        "Nutrition information available in the input": "Yes",
+        "Guessed nutrition": null,
+        "Page URL": "readystrongmeals.com/product/chicken-stew"
+    },
+    
+    "logprobs": [
+        {
+            "token": "{\"",
+            "logprob": -0.000006511407,
+            "bytes": [
+                123,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Currency",
+            "logprob": -0.0009794593,
+            "bytes": [
+                67,
+                117,
+                114,
+                114,
+                101,
+                110,
+                99,
+                121
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\":\"",
+            "logprob": -0.00039099273,
+            "bytes": [
+                34,
+                58,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "$",
+            "logprob": -0.0001592003,
+            "bytes": [
+                36
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\",\"",
+            "logprob": -0.000108668944,
+            "bytes": [
+                34,
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Page",
+            "logprob": -0.000012590794,
+            "bytes": [
+                80,
+                97,
+                103,
+                101
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " type",
+            "logprob": -0.000002220075,
+            "bytes": [
+                32,
+                116,
+                121,
+                112,
+                101
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\":\"",
+            "logprob": -0.00004632543,
+            "bytes": [
+                34,
+                58,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "product",
+            "logprob": -0.0011487908,
+            "bytes": [
+                112,
+                114,
+                111,
+                100,
+                117,
+                99,
+                116
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\",\"",
+            "logprob": -0.000040961266,
+            "bytes": [
+                34,
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Google",
+            "logprob": -0.000049424725,
+            "bytes": [
+                71,
+                111,
+                111,
+                103,
+                108,
+                101
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " category",
+            "logprob": -4.3202e-7,
+            "bytes": [
+                32,
+                99,
+                97,
+                116,
+                101,
+                103,
+                111,
+                114,
+                121
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\":\"",
+            "logprob": -0.00031842338,
+            "bytes": [
+                34,
+                58,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Food",
+            "logprob": -0.0031024925,
+            "bytes": [
+                70,
+                111,
+                111,
+                100
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " Items",
+            "logprob": -0.0003920656,
+            "bytes": [
+                32,
+                73,
+                116,
+                101,
+                109,
+                115
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\",\"",
+            "logprob": -0.000038457987,
+            "bytes": [
+                34,
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Sold",
+            "logprob": -0.000107000094,
+            "bytes": [
+                83,
+                111,
+                108,
+                100
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " by",
+            "logprob": -7.89631e-7,
+            "bytes": [
+                32,
+                98,
+                121
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\":\"",
+            "logprob": -0.25220186,
+            "bytes": [
+                34,
+                58,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "quantity",
+            "logprob": -0.0003393959,
+            "bytes": [
+                113,
+                117,
+                97,
+                110,
+                116,
+                105,
+                116,
+                121
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\",\"",
+            "logprob": -0.000038219583,
+            "bytes": [
+                34,
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Product",
+            "logprob": -0.00020532844,
+            "bytes": [
+                80,
+                114,
+                111,
+                100,
+                117,
+                99,
+                116
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " name",
+            "logprob": -0.000015928495,
+            "bytes": [
+                32,
+                110,
+                97,
+                109,
+                101
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\":\"",
+            "logprob": -0.00021676833,
+            "bytes": [
+                34,
+                58,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Chicken",
+            "logprob": -0.0007565005,
+            "bytes": [
+                67,
+                104,
+                105,
+                99,
+                107,
+                101,
+                110
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " Ste",
+            "logprob": -0.009998424,
+            "bytes": [
+                32,
+                83,
+                116,
+                101
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "w",
+            "logprob": -0.000016882126,
+            "bytes": [
+                119
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\",\"",
+            "logprob": -0.0018825924,
+            "bytes": [
+                34,
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Product",
+            "logprob": -0.000043941356,
+            "bytes": [
+                80,
+                114,
+                111,
+                100,
+                117,
+                99,
+                116
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " image",
+            "logprob": -0.000049186317,
+            "bytes": [
+                32,
+                105,
+                109,
+                97,
+                103,
+                101
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\":\"",
+            "logprob": -0.005273242,
+            "bytes": [
+                34,
+                58,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "https",
+            "logprob": -0.014316054,
+            "bytes": [
+                104,
+                116,
+                116,
+                112,
+                115
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "://",
+            "logprob": -0.000014498052,
+            "bytes": [
+                58,
+                47,
+                47
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "ready",
+            "logprob": -0.0042149248,
+            "bytes": [
+                114,
+                101,
+                97,
+                100,
+                121
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "strong",
+            "logprob": -0.0000017432603,
+            "bytes": [
+                115,
+                116,
+                114,
+                111,
+                110,
+                103
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "me",
+            "logprob": 0,
+            "bytes": [
+                109,
+                101
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "als",
+            "logprob": 0,
+            "bytes": [
+                97,
+                108,
+                115
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ".com",
+            "logprob": -4.3202e-7,
+            "bytes": [
+                46,
+                99,
+                111,
+                109
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "/wp",
+            "logprob": -0.14476432,
+            "bytes": [
+                47,
+                119,
+                112
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "-content",
+            "logprob": -0.000004365741,
+            "bytes": [
+                45,
+                99,
+                111,
+                110,
+                116,
+                101,
+                110,
+                116
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "/uploads",
+            "logprob": -0.0000024584822,
+            "bytes": [
+                47,
+                117,
+                112,
+                108,
+                111,
+                97,
+                100,
+                115
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "/",
+            "logprob": -7.89631e-7,
+            "bytes": [
+                47
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "202",
+            "logprob": -0.000041199673,
+            "bytes": [
+                50,
+                48,
+                50
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "4",
+            "logprob": -0.00028672256,
+            "bytes": [
+                52
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "/",
+            "logprob": -9.0883464e-7,
+            "bytes": [
+                47
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "01",
+            "logprob": -0.00041959065,
+            "bytes": [
+                48,
+                49
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "/ch",
+            "logprob": -0.000002220075,
+            "bytes": [
+                47,
+                99,
+                104
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "icken",
+            "logprob": -0.0000026968896,
+            "bytes": [
+                105,
+                99,
+                107,
+                101,
+                110
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "-st",
+            "logprob": -0.000012113979,
+            "bytes": [
+                45,
+                115,
+                116
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "ew",
+            "logprob": 0,
+            "bytes": [
+                101,
+                119
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "-",
+            "logprob": -0.00019936825,
+            "bytes": [
+                45
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "1",
+            "logprob": -0.000004365741,
+            "bytes": [
+                49
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ".jpg",
+            "logprob": -0.00001831257,
+            "bytes": [
+                46,
+                106,
+                112,
+                103
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\",\"",
+            "logprob": -0.05520339,
+            "bytes": [
+                34,
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Product",
+            "logprob": -0.00007851042,
+            "bytes": [
+                80,
+                114,
+                111,
+                100,
+                117,
+                99,
+                116
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " description",
+            "logprob": -0.000018908588,
+            "bytes": [
+                32,
+                100,
+                101,
+                115,
+                99,
+                114,
+                105,
+                112,
+                116,
+                105,
+                111,
+                110
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\":\"",
+            "logprob": -0.236852,
+            "bytes": [
+                34,
+                58,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Enjoy",
+            "logprob": -0.043959744,
+            "bytes": [
+                69,
+                110,
+                106,
+                111,
+                121
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " this",
+            "logprob": -0.00068336446,
+            "bytes": [
+                32,
+                116,
+                104,
+                105,
+                115
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " hearty",
+            "logprob": -0.0000160477,
+            "bytes": [
+                32,
+                104,
+                101,
+                97,
+                114,
+                116,
+                121
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " winter",
+            "logprob": -0.0005103798,
+            "bytes": [
+                32,
+                119,
+                105,
+                110,
+                116,
+                101,
+                114
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "y",
+            "logprob": -0.012596889,
+            "bytes": [
+                121
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " stew",
+            "logprob": -0.00007171581,
+            "bytes": [
+                32,
+                115,
+                116,
+                101,
+                119
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "!\\",
+            "logprob": -0.28667766,
+            "bytes": [
+                33,
+                92
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "n",
+            "logprob": -0.0000052001665,
+            "bytes": [
+                110
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\",\"",
+            "logprob": -0.0050929836,
+            "bytes": [
+                34,
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Price",
+            "logprob": -0.00003917321,
+            "bytes": [
+                80,
+                114,
+                105,
+                99,
+                101
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\":\"",
+            "logprob": -0.004396056,
+            "bytes": [
+                34,
+                58,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "12",
+            "logprob": -0.03413027,
+            "bytes": [
+                49,
+                50
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ".",
+            "logprob": -0.000106284875,
+            "bytes": [
+                46
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "99",
+            "logprob": -0.0008158237,
+            "bytes": [
+                57,
+                57
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\",\"",
+            "logprob": -0.0013452349,
+            "bytes": [
+                34,
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Ingredients",
+            "logprob": -0.000087212284,
+            "bytes": [
+                73,
+                110,
+                103,
+                114,
+                101,
+                100,
+                105,
+                101,
+                110,
+                116,
+                115
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\":[\"",
+            "logprob": -0.00232641,
+            "bytes": [
+                34,
+                58,
+                91,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Quarter",
+            "logprob": -0.0023582869,
+            "bytes": [
+                81,
+                117,
+                97,
+                114,
+                116,
+                101,
+                114
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " leg",
+            "logprob": -0.0003398727,
+            "bytes": [
+                32,
+                108,
+                101,
+                103
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " chicken",
+            "logprob": -0.000034405064,
+            "bytes": [
+                32,
+                99,
+                104,
+                105,
+                99,
+                107,
+                101,
+                110
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " on",
+            "logprob": -0.0032050428,
+            "bytes": [
+                32,
+                111,
+                110
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " the",
+            "logprob": -0.00021224226,
+            "bytes": [
+                32,
+                116,
+                104,
+                101
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " bone",
+            "logprob": -6.704273e-7,
+            "bytes": [
+                32,
+                98,
+                111,
+                110,
+                101
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\",\"",
+            "logprob": -0.00039694557,
+            "bytes": [
+                34,
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Tom",
+            "logprob": -0.00096422306,
+            "bytes": [
+                84,
+                111,
+                109
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "ato",
+            "logprob": -0.00043198047,
+            "bytes": [
+                97,
+                116,
+                111
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\",\"",
+            "logprob": -0.00024287392,
+            "bytes": [
+                34,
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Tom",
+            "logprob": -0.000025226382,
+            "bytes": [
+                84,
+                111,
+                109
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "ato",
+            "logprob": -0.000003650519,
+            "bytes": [
+                97,
+                116,
+                111
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " sauce",
+            "logprob": -0.00023429126,
+            "bytes": [
+                32,
+                115,
+                97,
+                117,
+                99,
+                101
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\",\"",
+            "logprob": -0.000053239244,
+            "bytes": [
+                34,
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Ch",
+            "logprob": -0.00073744263,
+            "bytes": [
+                67,
+                104
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "ick",
+            "logprob": -5.5122365e-7,
+            "bytes": [
+                105,
+                99,
+                107
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "peas",
+            "logprob": -0.000003650519,
+            "bytes": [
+                112,
+                101,
+                97,
+                115
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\",\"",
+            "logprob": -0.0000682589,
+            "bytes": [
+                34,
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Pot",
+            "logprob": -0.0000052001665,
+            "bytes": [
+                80,
+                111,
+                116
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "atoes",
+            "logprob": -0.00017994174,
+            "bytes": [
+                97,
+                116,
+                111,
+                101,
+                115
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\",\"",
+            "logprob": -0.00005955704,
+            "bytes": [
+                34,
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Car",
+            "logprob": -0.000001147242,
+            "bytes": [
+                67,
+                97,
+                114
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "rots",
+            "logprob": -7.89631e-7,
+            "bytes": [
+                114,
+                111,
+                116,
+                115
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\",\"",
+            "logprob": -0.000018074163,
+            "bytes": [
+                34,
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Cel",
+            "logprob": -0.0000012664457,
+            "bytes": [
+                67,
+                101,
+                108
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "ery",
+            "logprob": 0,
+            "bytes": [
+                101,
+                114,
+                121
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\",\"",
+            "logprob": -0.00003333223,
+            "bytes": [
+                34,
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Bro",
+            "logprob": -0.000040007635,
+            "bytes": [
+                66,
+                114,
+                111
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "th",
+            "logprob": -0.000002220075,
+            "bytes": [
+                116,
+                104
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\",\"",
+            "logprob": -0.001220821,
+            "bytes": [
+                34,
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Sp",
+            "logprob": -0.000023915141,
+            "bytes": [
+                83,
+                112
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "ices",
+            "logprob": -9.0883464e-7,
+            "bytes": [
+                105,
+                99,
+                101,
+                115
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\",\"",
+            "logprob": -0.34864148,
+            "bytes": [
+                34,
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Her",
+            "logprob": -0.00008220573,
+            "bytes": [
+                72,
+                101,
+                114
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "bs",
+            "logprob": -0.000005080963,
+            "bytes": [
+                98,
+                115
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\"],",
+            "logprob": -0.0005544632,
+            "bytes": [
+                34,
+                93,
+                44
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\"",
+            "logprob": -0.0000056769813,
+            "bytes": [
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Nutrition",
+            "logprob": -0.000014140442,
+            "bytes": [
+                78,
+                117,
+                116,
+                114,
+                105,
+                116,
+                105,
+                111,
+                110
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " per",
+            "logprob": -0.0000055577775,
+            "bytes": [
+                32,
+                112,
+                101,
+                114
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " serving",
+            "logprob": -0.0000031737043,
+            "bytes": [
+                32,
+                115,
+                101,
+                114,
+                118,
+                105,
+                110,
+                103
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\":{\"",
+            "logprob": -0.000039769227,
+            "bytes": [
+                34,
+                58,
+                123,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Calories",
+            "logprob": -0.037145488,
+            "bytes": [
+                67,
+                97,
+                108,
+                111,
+                114,
+                105,
+                101,
+                115
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " (",
+            "logprob": -0.001715278,
+            "bytes": [
+                32,
+                40
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "K",
+            "logprob": -0.002544751,
+            "bytes": [
+                75
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "cal",
+            "logprob": -0.00020795093,
+            "bytes": [
+                99,
+                97,
+                108
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ")\":",
+            "logprob": -0.0002007987,
+            "bytes": [
+                41,
+                34,
+                58
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "428",
+            "logprob": -0.008582309,
+            "bytes": [
+                52,
+                50,
+                56
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ",\"",
+            "logprob": -0.000011756368,
+            "bytes": [
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Car",
+            "logprob": -0.1526602,
+            "bytes": [
+                67,
+                97,
+                114
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "bo",
+            "logprob": -0.00038145646,
+            "bytes": [
+                98,
+                111
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "hydrates",
+            "logprob": -0.000027729659,
+            "bytes": [
+                104,
+                121,
+                100,
+                114,
+                97,
+                116,
+                101,
+                115
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " (",
+            "logprob": -0.000008537869,
+            "bytes": [
+                32,
+                40
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "g",
+            "logprob": -0.00067514315,
+            "bytes": [
+                103
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ")\":",
+            "logprob": -0.00006456359,
+            "bytes": [
+                41,
+                34,
+                58
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "26",
+            "logprob": -0.08203078,
+            "bytes": [
+                50,
+                54
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ",\"",
+            "logprob": -0.001466177,
+            "bytes": [
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Fat",
+            "logprob": -0.18441074,
+            "bytes": [
+                70,
+                97,
+                116
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " (",
+            "logprob": -0.000013544423,
+            "bytes": [
+                32,
+                40
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "g",
+            "logprob": -0.0000013856493,
+            "bytes": [
+                103
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ")\":",
+            "logprob": -0.000013663626,
+            "bytes": [
+                41,
+                34,
+                58
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "20",
+            "logprob": -0.00035238542,
+            "bytes": [
+                50,
+                48
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ",\"",
+            "logprob": -0.000012948405,
+            "bytes": [
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "S",
+            "logprob": -0.06253335,
+            "bytes": [
+                83
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "aturated",
+            "logprob": -0.0020713948,
+            "bytes": [
+                97,
+                116,
+                117,
+                114,
+                97,
+                116,
+                101,
+                100
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " Fat",
+            "logprob": -0.004622611,
+            "bytes": [
+                32,
+                70,
+                97,
+                116
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " (",
+            "logprob": -0.0000150940705,
+            "bytes": [
+                32,
+                40
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "g",
+            "logprob": -1.9361265e-7,
+            "bytes": [
+                103
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ")\":",
+            "logprob": -0.000023080716,
+            "bytes": [
+                41,
+                34,
+                58
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "6",
+            "logprob": -0.83213484,
+            "bytes": [
+                54
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ",\"",
+            "logprob": -0.007657035,
+            "bytes": [
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Protein",
+            "logprob": -0.0026178705,
+            "bytes": [
+                80,
+                114,
+                111,
+                116,
+                101,
+                105,
+                110
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " (",
+            "logprob": -0.0000016240566,
+            "bytes": [
+                32,
+                40
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "g",
+            "logprob": -0.0000021008714,
+            "bytes": [
+                103
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ")\":",
+            "logprob": -0.000008537869,
+            "bytes": [
+                41,
+                34,
+                58
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "36",
+            "logprob": -0.0007523321,
+            "bytes": [
+                51,
+                54
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ",\"",
+            "logprob": -0.000022961513,
+            "bytes": [
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Salt",
+            "logprob": -0.009428915,
+            "bytes": [
+                83,
+                97,
+                108,
+                116
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " (",
+            "logprob": -0.000002577686,
+            "bytes": [
+                32,
+                40
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "g",
+            "logprob": -0.00016003472,
+            "bytes": [
+                103
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ")\":",
+            "logprob": -0.000010445127,
+            "bytes": [
+                41,
+                34,
+                58
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "1",
+            "logprob": -0.1834626,
+            "bytes": [
+                49
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ".",
+            "logprob": -0.008636315,
+            "bytes": [
+                46
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "5",
+            "logprob": -0.4330552,
+            "bytes": [
+                53
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ",\"",
+            "logprob": -0.0000079418505,
+            "bytes": [
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Sugar",
+            "logprob": -0.011176556,
+            "bytes": [
+                83,
+                117,
+                103,
+                97,
+                114
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " (",
+            "logprob": -0.0000037697225,
+            "bytes": [
+                32,
+                40
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "g",
+            "logprob": -1.9361265e-7,
+            "bytes": [
+                103
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ")\":",
+            "logprob": -0.000010921943,
+            "bytes": [
+                41,
+                34,
+                58
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "4",
+            "logprob": -0.72664213,
+            "bytes": [
+                52
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ",\"",
+            "logprob": -0.00070361444,
+            "bytes": [
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "S",
+            "logprob": -0.00546854,
+            "bytes": [
+                83
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "odium",
+            "logprob": -5.5122365e-7,
+            "bytes": [
+                111,
+                100,
+                105,
+                117,
+                109
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " (",
+            "logprob": -0.00000758424,
+            "bytes": [
+                32,
+                40
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "mg",
+            "logprob": -0.0000031737043,
+            "bytes": [
+                109,
+                103
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ")\":",
+            "logprob": -0.0000323786,
+            "bytes": [
+                41,
+                34,
+                58
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "600",
+            "logprob": -0.006221113,
+            "bytes": [
+                54,
+                48,
+                48
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ",\"",
+            "logprob": -0.00030126172,
+            "bytes": [
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Fiber",
+            "logprob": -0.041708466,
+            "bytes": [
+                70,
+                105,
+                98,
+                101,
+                114
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " (",
+            "logprob": -0.0000041273333,
+            "bytes": [
+                32,
+                40
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "g",
+            "logprob": -9.0883464e-7,
+            "bytes": [
+                103
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ")\":",
+            "logprob": -0.000039769227,
+            "bytes": [
+                41,
+                34,
+                58
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "6",
+            "logprob": -0.34383422,
+            "bytes": [
+                54
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "},\"",
+            "logprob": -0.0011328321,
+            "bytes": [
+                125,
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Nutrition",
+            "logprob": -0.00031365524,
+            "bytes": [
+                78,
+                117,
+                116,
+                114,
+                105,
+                116,
+                105,
+                111,
+                110
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " category",
+            "logprob": -0.0000010280384,
+            "bytes": [
+                32,
+                99,
+                97,
+                116,
+                101,
+                103,
+                111,
+                114,
+                121
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\":\"",
+            "logprob": -0.00004310693,
+            "bytes": [
+                34,
+                58,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "General",
+            "logprob": -0.03180856,
+            "bytes": [
+                71,
+                101,
+                110,
+                101,
+                114,
+                97,
+                108
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " foods",
+            "logprob": -0.00014811802,
+            "bytes": [
+                32,
+                102,
+                111,
+                111,
+                100,
+                115
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\",\"",
+            "logprob": -0.00004048445,
+            "bytes": [
+                34,
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Serving",
+            "logprob": -0.000012948405,
+            "bytes": [
+                83,
+                101,
+                114,
+                118,
+                105,
+                110,
+                103
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " size",
+            "logprob": -0.000001504853,
+            "bytes": [
+                32,
+                115,
+                105,
+                122,
+                101
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " (",
+            "logprob": -0.000508711,
+            "bytes": [
+                32,
+                40
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "grams",
+            "logprob": -0.000015213274,
+            "bytes": [
+                103,
+                114,
+                97,
+                109,
+                115
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " or",
+            "logprob": -0.0045801266,
+            "bytes": [
+                32,
+                111,
+                114
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " m",
+            "logprob": -0.000001147242,
+            "bytes": [
+                32,
+                109
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "L",
+            "logprob": 0,
+            "bytes": [
+                76
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ")\":",
+            "logprob": -0.09788979,
+            "bytes": [
+                41,
+                34,
+                58
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "300",
+            "logprob": -0.48394966,
+            "bytes": [
+                51,
+                48,
+                48
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ",\"",
+            "logprob": -0.000037027545,
+            "bytes": [
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "All",
+            "logprob": -0.00011188744,
+            "bytes": [
+                65,
+                108,
+                108
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "ergens",
+            "logprob": -0.000059795446,
+            "bytes": [
+                101,
+                114,
+                103,
+                101,
+                110,
+                115
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\":[]",
+            "logprob": -0.11540021,
+            "bytes": [
+                34,
+                58,
+                91,
+                93
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ",\"",
+            "logprob": -0.0000060345924,
+            "bytes": [
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Nutrition",
+            "logprob": -0.0028210394,
+            "bytes": [
+                78,
+                117,
+                116,
+                114,
+                105,
+                116,
+                105,
+                111,
+                110
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " information",
+            "logprob": -4.3202e-7,
+            "bytes": [
+                32,
+                105,
+                110,
+                102,
+                111,
+                114,
+                109,
+                97,
+                116,
+                105,
+                111,
+                110
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " available",
+            "logprob": -0.0000021008714,
+            "bytes": [
+                32,
+                97,
+                118,
+                97,
+                105,
+                108,
+                97,
+                98,
+                108,
+                101
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " in",
+            "logprob": -0.0000010280384,
+            "bytes": [
+                32,
+                105,
+                110
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " the",
+            "logprob": -5.5122365e-7,
+            "bytes": [
+                32,
+                116,
+                104,
+                101
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " input",
+            "logprob": -0.0000013856493,
+            "bytes": [
+                32,
+                105,
+                110,
+                112,
+                117,
+                116
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\":\"",
+            "logprob": -0.000025226382,
+            "bytes": [
+                34,
+                58,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Yes",
+            "logprob": -0.031436086,
+            "bytes": [
+                89,
+                101,
+                115
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\",\"",
+            "logprob": -0.00005276243,
+            "bytes": [
+                34,
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Gu",
+            "logprob": -0.000342972,
+            "bytes": [
+                71,
+                117
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "essed",
+            "logprob": 0,
+            "bytes": [
+                101,
+                115,
+                115,
+                101,
+                100
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " nutrition",
+            "logprob": -0.0000010280384,
+            "bytes": [
+                32,
+                110,
+                117,
+                116,
+                114,
+                105,
+                116,
+                105,
+                111,
+                110
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\":",
+            "logprob": -0.5766032,
+            "bytes": [
+                34,
+                58
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "null",
+            "logprob": -0.22552975,
+            "bytes": [
+                110,
+                117,
+                108,
+                108
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ",\"",
+            "logprob": -0.043195695,
+            "bytes": [
+                44,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "Page",
+            "logprob": -0.000043941356,
+            "bytes": [
+                80,
+                97,
+                103,
+                101
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": " URL",
+            "logprob": 0,
+            "bytes": [
+                32,
+                85,
+                82,
+                76
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\":\"",
+            "logprob": -0.029929824,
+            "bytes": [
+                34,
+                58,
+                34
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "ready",
+            "logprob": -0.015261105,
+            "bytes": [
+                114,
+                101,
+                97,
+                100,
+                121
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "strong",
+            "logprob": -0.00005025915,
+            "bytes": [
+                115,
+                116,
+                114,
+                111,
+                110,
+                103
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "me",
+            "logprob": -0.000001504853,
+            "bytes": [
+                109,
+                101
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "als",
+            "logprob": -0.000001147242,
+            "bytes": [
+                97,
+                108,
+                115
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": ".com",
+            "logprob": -0.000035477897,
+            "bytes": [
+                46,
+                99,
+                111,
+                109
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "/product",
+            "logprob": -0.012271811,
+            "bytes": [
+                47,
+                112,
+                114,
+                111,
+                100,
+                117,
+                99,
+                116
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "/ch",
+            "logprob": -0.0002605014,
+            "bytes": [
+                47,
+                99,
+                104
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "icken",
+            "logprob": -0.000002220075,
+            "bytes": [
+                105,
+                99,
+                107,
+                101,
+                110
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "-st",
+            "logprob": -0.0001842294,
+            "bytes": [
+                45,
+                115,
+                116
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "ew",
+            "logprob": -3.1281633e-7,
+            "bytes": [
+                101,
+                119
+            ],
+            "top_logprobs": []
+        },
+        {
+            "token": "\"}",
+            "logprob": -0.0009132516,
+            "bytes": [
+                34,
+                125
+            ],
+            "top_logprobs": []
+        }
+    ],
+
+    "confidenceScore": {
+        "confidenceResults": {
+            "Currency": {
+                "value": "$",
+                "isValid": true,
+                "confidence": 0.9990210202136927
+            },
+            "Page type": {
+                "value": "product",
+                "isValid": true,
+                "confidence": 1
+            },
+            "Google category": {
+                "value": "Food Items",
+                "isValid": true,
+                "confidence": 1
+            },
+            "Sold by": {
+                "value": "quantity",
+                "isValid": true,
+                "confidence": 1
+            },
+            "Product name": {
+                "value": "Chicken Stew",
+                "isValid": true,
+                "confidence": 1
+            },
+            "Product image": {
+                "value": "https://readystrongmeals.com/wp-content/uploads/2024/01/chicken-stew-1.jpg",
+                "isValid": true,
+                "confidence": 1
+            },
+            "Product description": {
+                "value": "Enjoy this hearty wintery stew!\n",
+                "isValid": true,
+                "confidence": 1
+            },
+            "Price": {
+                "value": "12.99",
+                "isValid": true,
+                "confidence": 0.9999608275572601
+            },
+            "Ingredients": {
+                "value": [
+                    "Quarter leg chicken on the bone",
+                    "Tomato",
+                    "Tomato sauce",
+                    "Chickpeas",
+                    "Potatoes",
+                    "Carrots",
+                    "Celery",
+                    "Broth",
+                    "Spices",
+                    "Herbs"
+                ],
+                "isValid": false,
+                "confidence": 0.9999127915188807
+            },
+            "Nutrition per serving": {
+                "value": {
+                    "Calories (Kcal)": 428,
+                    "Carbohydrates (g)": 26,
+                    "Fat (g)": 20,
+                    "Saturated Fat (g)": 6,
+                    "Protein (g)": 36,
+                    "Salt (g)": 1.5,
+                    "Sugar (g)": 4,
+                    "Sodium (mg)": 600,
+                    "Fiber (g)": 6
+                },
+                "isValid": false,
+                "confidence": 1
+            },
+            "Nutrition category": {
+                "value": "General foods",
+                "isValid": false,
+                "confidence": 1
+            },
+            "Serving size (grams or mL)": {
+                "value": 300,
+                "isValid": true,
+                "confidence": 0.6163442278997915
+            },
+            "Allergens": {
+                "value": [],
+                "isValid": false,
+                "confidence": 0.8910094816370424
+            },
+            "Nutrition information available in the input": {
+                "value": "Yes",
+                "isValid": false,
+                "confidence": 1
+            },
+            "Guessed nutrition": {
+                "value": null,
+                "isValid": false,
+                "confidence": 0.7980933168185309
+            },
+            "Page URL": {
+                "value": "readystrongmeals.com/product/chicken-stew",
+                "isValid": true,
+                "confidence": 1
+            }
+        },
+        "minConfidence": 0.6163442278997915,
+        "avgConfidence": 0.9565213541028248
+    }
+}

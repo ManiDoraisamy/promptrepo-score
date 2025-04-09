@@ -10,9 +10,7 @@ function loopData(jsonOutput, logprobs, position=0)
     {
         let value = jsonOutput[key];
         let search = '';
-        if(value === null || value === undefined)
-            search = `null`;
-        else if(typeof value === 'string')
+        if(typeof value === 'string')
             search = `"${value}"`;
         else if(Array.isArray(value))
         {
@@ -51,13 +49,21 @@ function getScore(logprobs, key, search, position)
         var part = logproblist.map(l=>l.token).join('');
         if(part.includes(`"${key}":${search}`) || part.includes(`"${key}": ${search}`))
         {
-            const scoreSum = logproblist.map(l=>l.logprob).reduce((a,b)=>a+b, 0);
-            let score = Math.exp(scoreSum/logproblist.length);
+            let score = getValueScore(logproblist, search);
             return {score, pos:init};
         }
         init++;
     }
     var whole = logprobs.map(l=>l.token).join('');
-    console.log('score not found', search, 'in', whole);
+    console.log('No match for', key, search, 'in', whole);
     return {score:0, pos:position};
+}
+
+function getValueScore(logprobs, search)
+{
+    var logproblist = logprobs.filter(l=>String(search).includes(l.token));
+    if(logproblist.length==0) return 0;
+    const scoreSum = logproblist.map(l=>l.logprob).reduce((a,b)=>a+b, 0);
+    let score = Math.exp(scoreSum/logproblist.length);
+    return score;
 }
