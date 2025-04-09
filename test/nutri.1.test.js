@@ -7,6 +7,7 @@ describe('Nutrition Data Confidence Score Tests', () => {
         
         // Calculate confidence scores (schema argument is ignored)
         const result = calculateConfidenceScores(data, rawLogprobs);
+        console.log('result', JSON.stringify(result, null, 2));
         const servingSize = result['Serving size (grams or mL)'];
         console.log('result', JSON.stringify(servingSize, null, 2));
 
