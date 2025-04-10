@@ -18,7 +18,7 @@ npm install openai  # Required for OpenAI API examples
 ## Model Requirements
 
 This package requires OpenAI models that support both logprobs and structured JSON output:
-- For chat completion: `gpt-3.5-turbo` or `gpt-4`
+- For chat completion: `gpt-3.5-turbo` or `gpt-4` or `gpt-4o`
 - For completion: `gpt-3.5-turbo-instruct`
 
 ## Basic Usage

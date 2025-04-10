@@ -1,6 +1,6 @@
 {
   "name": "@promptrepo/score",
-  "version": "6.0.5",
+  "version": "6.0.6",
   "description": "Calculate confidence scores for OpenAI JSON outputs",
   "type": "module",
   "main": "src/index.js",
