@@ -36,7 +36,7 @@ function loopData(jsonOutput, logprobs, position=0)
         else if(typeof value === 'object')
         {
             const {scores:nestedScores, pos} = loopData(value, logprobs, position);
-            var avgScore = Object.values(nestedScores).reduce((a,b)=>a+b, 0)/Object.values(nestedScores).length;
+            var avgScore = Object.values(nestedScores).reduce((a,b)=>a+b.score, 0)/Object.values(nestedScores).length;
             scores[key] = {value:nestedScores, score:avgScore};
             position = pos;
         }
